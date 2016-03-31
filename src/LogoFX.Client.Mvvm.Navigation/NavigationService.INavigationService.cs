@@ -3,7 +3,7 @@ using Solid.Practices.IoC;
 
 namespace LogoFX.Client.Mvvm.Navigation
 {
-    internal sealed partial class NavigationService : INavigationService
+    partial class NavigationService : INavigationService
     {
         IRootableNavigationBuilder<T> INavigationService.RegisterViewModel<T>(IIocContainer container)
         {
@@ -82,6 +82,9 @@ namespace LogoFX.Client.Mvvm.Navigation
             UpdateProperties();
         }
 
+        /// <summary>
+        /// Navigates back.
+        /// </summary>
         public async void Back()
         {
             HistoryItem historyItem = _history[_currentIndex];
@@ -114,6 +117,9 @@ namespace LogoFX.Client.Mvvm.Navigation
             }
         }
 
+        /// <summary>
+        /// Navigates forward.
+        /// </summary>
         public async void Forward()
         {
             HistoryItem historyItem = _history[_currentIndex];
@@ -145,6 +151,12 @@ namespace LogoFX.Client.Mvvm.Navigation
             }
         }
 
+        /// <summary>
+        /// Returns value indicating whether can navigate back.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if can navigate back; otherwise, <c>false</c>.
+        /// </value>
         public bool CanNavigateBack
         {
             get
@@ -158,6 +170,12 @@ namespace LogoFX.Client.Mvvm.Navigation
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether can navigate forward.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if can navigate forward; otherwise, <c>false</c>.
+        /// </value>
         public bool CanNavigateForward
         {
             get
@@ -171,6 +189,12 @@ namespace LogoFX.Client.Mvvm.Navigation
             }
         }
 
+        /// <summary>
+        /// Gets the current item.
+        /// </summary>
+        /// <value>
+        /// The current item.
+        /// </value>
         public object Current
         {
             get

@@ -1,6 +1,6 @@
 ﻿namespace LogoFX.Client.Mvvm.Navigation
 {
-    internal sealed partial class NavigationService
+    partial class NavigationService
     {
         private abstract class RootableNavigationBuilder<T> : NavigationBuilder<T>, IRootableNavigationBuilder<T>
         {

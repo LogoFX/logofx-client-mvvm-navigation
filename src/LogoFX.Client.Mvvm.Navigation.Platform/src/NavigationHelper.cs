@@ -1,6 +1,11 @@
 ﻿using System;
+#if NET45
 using System.Windows;
 using System.Windows.Input;
+#endif
+#if NETFX_CORE || WINDOWS_UWP
+using Windows.UI.Xaml;
+#endif
 
 namespace LogoFX.Client.Mvvm.Navigation
 {

@@ -2,7 +2,7 @@
 
 namespace LogoFX.Client.Mvvm.Navigation
 {
-    internal sealed partial class NavigationService
+    partial class NavigationService
     {
         private sealed class ResolverBuilder<T> : RootableNavigationBuilder<T>
         {

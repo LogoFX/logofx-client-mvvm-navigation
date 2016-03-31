@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using LogoFX.Client.Core;
 using Solid.Practices.IoC;
 
 namespace LogoFX.Client.Mvvm.Navigation
 {
-    internal sealed partial class NavigationService : NotifyPropertyChangedBase<NavigationService>
+    /// <summary>
+    /// The navigation service.
+    /// </summary>    
+    /// <seealso cref="LogoFX.Client.Mvvm.Navigation.INavigationService" />
+    public sealed partial class NavigationService : NotifyPropertyChangedBase<NavigationService>
     {
         #region Nested Types
 
@@ -71,12 +76,16 @@ namespace LogoFX.Client.Mvvm.Navigation
 
         #endregion
 
-        #region Internal Members
-
-        internal void RegisterAttribute(Type type, NavigationViewModelAttribute attribute, IIocContainer container)
+        /// <summary>
+        /// Registers the attribute.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="attribute">The attribute.</param>
+        /// <param name="container">The container.</param>
+        public void RegisterAttribute(Type type, NavigationViewModelAttribute attribute, IIocContainer container)
         {
-            var types = new List<Type> {type};            
-            var synonymAttributes = Attribute.GetCustomAttributes(type, inherit: false).OfType<NavigationSynonymAttribute>();                
+            var types = new List<Type> {type};
+            var synonymAttributes = type.GetTypeInfo().GetCustomAttributes<NavigationSynonymAttribute>(inherit: false);
             types.AddRange(synonymAttributes.Select(x => x.SynonymType));
 
             foreach (var t in types)
@@ -85,8 +94,6 @@ namespace LogoFX.Client.Mvvm.Navigation
                 _builders.Add(t, builder);
             }
         }
-
-        #endregion
 
         #region Private Members
 
@@ -213,7 +220,7 @@ namespace LogoFX.Client.Mvvm.Navigation
                     }
                     catch (Exception err)
                     {
-                        Trace.TraceError("BeforeNavigationOutAsync throws error: {0}", err);
+                        //Trace.TraceError("BeforeNavigationOutAsync throws error: {0}", err);
                         throw;
                     }
                     if (!canNavigate)
@@ -231,7 +238,7 @@ namespace LogoFX.Client.Mvvm.Navigation
             }
             catch (Exception err)
             {
-                Trace.TraceError("ActivateConductorAsync throws error: {0}", err);                
+                //Trace.TraceError("ActivateConductorAsync throws error: {0}", err);                
                 throw;
             }
             object viewModel = builder.GetValue();

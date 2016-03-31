@@ -3,7 +3,7 @@ using Solid.Practices.IoC;
 
 namespace LogoFX.Client.Mvvm.Navigation
 {
-    internal sealed partial class NavigationService
+    partial class NavigationService
     {
         private sealed class GenericBuilder<T> : RootableNavigationBuilder<T> where T : class
         {

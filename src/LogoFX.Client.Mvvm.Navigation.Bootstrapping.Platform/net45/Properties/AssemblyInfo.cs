@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("LogoFX.Client.Mvvm.Navigation")]
+[assembly: AssemblyTitle("LogoFX.Client.Mvvm.Navigation.Bootstrapping")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("LogoUI 2012")]
-[assembly: AssemblyProduct("LogoFX.Client.Mvvm.Navigation")]
-[assembly: AssemblyCopyright("Copyright LogoUI 2012 ©  2015")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("LogoFX.Client.Mvvm.Navigation.Bootstrapping")]
+[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3cc62b53-d430-467b-bbc0-f0084ab6e289")]
+[assembly: Guid("d07ae3fb-6a84-46bb-a151-74679788707c")]
 
 // Version information for an assembly consists of the following four values:
 //

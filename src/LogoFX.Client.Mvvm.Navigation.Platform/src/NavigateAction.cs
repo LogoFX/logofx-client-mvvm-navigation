@@ -1,21 +1,29 @@
 ﻿using System;
+#if NET45
 using System.Windows;
 using System.Windows.Interactivity;
+#endif
+#if NETFX_CORE || WINDOWS_UWP
+using Windows.UI.Xaml;
+#endif
 
 namespace LogoFX.Client.Mvvm.Navigation
 {
     /// <summary>
     /// Navigate action.
     /// </summary>
-    public sealed class NavigateAction : TriggerAction<UIElement>
+    public sealed class NavigateAction : TriggerAction
+#if NET45
+        <UIElement>
+#endif
     {
-        #region Fields
+#region Fields
 
         private static readonly Type Type = typeof(NavigateAction);
 
-        #endregion
+#endregion
 
-        #region Dependency Properties
+#region Dependency Properties
 
         /// <summary>
         /// Navigation parameter.
@@ -24,7 +32,8 @@ namespace LogoFX.Client.Mvvm.Navigation
             DependencyProperty.Register(
                 "Parameter",
                 typeof(NavigationParameter),
-                Type);
+                Type,
+                new PropertyMetadata(null));
 
         /// <summary>
         /// Navigation target type.
@@ -33,7 +42,8 @@ namespace LogoFX.Client.Mvvm.Navigation
             DependencyProperty.Register(
                 "ItemType",
                 typeof(Type),
-                Type);
+                Type,
+                new PropertyMetadata(null));
 
         /// <summary>
         /// Navigation argument.
@@ -42,7 +52,8 @@ namespace LogoFX.Client.Mvvm.Navigation
             DependencyProperty.Register(
                 "Argument",
                 typeof(object),
-                Type);
+                Type,
+                new PropertyMetadata(null));
 
         /// <summary>
         /// Navigation service.
@@ -51,11 +62,12 @@ namespace LogoFX.Client.Mvvm.Navigation
             DependencyProperty.Register(
                 "NavigationService",
                 typeof (INavigationService),
-                Type);
+                Type,
+                new PropertyMetadata(null));
 
-        #endregion
+#endregion
 
-        #region Public Properties
+#region Public Properties
 
         /// <summary>
         /// Navigation parameter.
@@ -99,8 +111,8 @@ namespace LogoFX.Client.Mvvm.Navigation
             set { SetValue(NavigationServiceProperty, value); }
         }
 
-        #endregion
-
+#endregion
+        
         /// <summary>
         /// Invokes the action.
         /// </summary>
