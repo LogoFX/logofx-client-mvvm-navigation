@@ -14,7 +14,7 @@ namespace LogoFX.Client.Mvvm.Navigation
     /// <typeparam name="TRootViewModel">The type of the root view model.</typeparam>
     /// <typeparam name="TIocContainerAdapter">The type of the ioc container adapter.</typeparam>    
     public class NavigationMiddleware<TRootViewModel, TIocContainerAdapter> : 
-        IMiddleware<BootstrapperContainerBase<TRootViewModel, TIocContainerAdapter>>        
+        IMiddleware<IBootstrapperWithContainerAdapter<TRootViewModel, TIocContainerAdapter>>        
         where TRootViewModel : class
         where TIocContainerAdapter : class, IIocContainerAdapter, IIocContainer, IBootstrapperAdapter, new()
     {
@@ -53,8 +53,8 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// </summary>
         /// <param name="object">The object.</param>
         /// <returns></returns>
-        public BootstrapperContainerBase<TRootViewModel, TIocContainerAdapter> Apply(
-            BootstrapperContainerBase<TRootViewModel, TIocContainerAdapter> @object)
+        public IBootstrapperWithContainerAdapter<TRootViewModel, TIocContainerAdapter> Apply(
+            IBootstrapperWithContainerAdapter<TRootViewModel, TIocContainerAdapter> @object)
         {            
             @object.ContainerAdapter.RegisterInstance(NavigationService);
             OnRegisterRoot(NavigationService, @object.ContainerAdapter);
@@ -65,12 +65,12 @@ namespace LogoFX.Client.Mvvm.Navigation
         private void RegisterNavigationViewModels(IIocContainer container, IEnumerable<Assembly> assemblies)
         {
             var viewModelTypes = assemblies.ToArray()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => type != typeof(TRootViewModel) && type.GetTypeInfo().IsClass)
-                .Select(type => new
+                .SelectMany(assembly => assembly.DefinedTypes)
+                .Where(typeInfo => typeInfo.Equals(typeof(TRootViewModel).GetTypeInfo()) == false && typeInfo.IsClass)
+                .Select(typeInfo => new
                 {
-                    Type = type,
-                    Attr = type.GetTypeInfo().GetCustomAttribute<NavigationViewModelAttribute>()
+                    Type = typeInfo.AsType(),
+                    Attr = typeInfo.GetCustomAttribute<NavigationViewModelAttribute>()
                 })
                 .Where(x => x.Attr != null);
 

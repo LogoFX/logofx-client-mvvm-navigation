@@ -107,8 +107,11 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\src\NavigationBootstrapper.cs">
-      <Link>NavigationBootstrapper.cs</Link>
+    <Compile Include="..\src\NavigateAction.cs">
+      <Link>NavigateAction.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationHelper.cs">
+      <Link>NavigationHelper.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\LogoFX.Client.Mvvm.Navigation.Platform.UWP.rd.xml" />

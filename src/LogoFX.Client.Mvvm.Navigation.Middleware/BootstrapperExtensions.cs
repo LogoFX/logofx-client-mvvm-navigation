@@ -16,9 +16,9 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// <typeparam name="TIocContainerAdapter">The type of the ioc container adapter.</typeparam>
         /// <param name="bootstrapper">The bootstrapper.</param>
         /// <returns></returns>
-        public static BootstrapperContainerBase<TRootViewModel, TIocContainerAdapter>            
+        public static IBootstrapperWithContainerAdapter<TRootViewModel, TIocContainerAdapter>            
             UseNavigation<TRootViewModel, TIocContainerAdapter>(
-            this BootstrapperContainerBase<TRootViewModel, TIocContainerAdapter> bootstrapper) 
+            this IBootstrapperWithContainerAdapter<TRootViewModel, TIocContainerAdapter> bootstrapper) 
             where TRootViewModel : class 
             where TIocContainerAdapter : class, IIocContainer, IIocContainerAdapter, IBootstrapperAdapter, new()
         {
