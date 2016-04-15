@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using LogoFX.Client.Bootstrapping;
+using LogoFX.Bootstrapping;
 using LogoFX.Client.Bootstrapping.Adapters.Contracts;
 using Solid.Practices.IoC;
 using Solid.Practices.Middleware;

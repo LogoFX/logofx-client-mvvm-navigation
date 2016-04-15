@@ -1,4 +1,4 @@
-using LogoFX.Client.Bootstrapping;
+using LogoFX.Bootstrapping;
 using LogoFX.Client.Bootstrapping.Adapters.Contracts;
 using Solid.Practices.IoC;
 
