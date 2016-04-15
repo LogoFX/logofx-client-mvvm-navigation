@@ -11,11 +11,11 @@ namespace LogoFX.Client.Mvvm.Navigation
     /// <summary>
     /// Navigation middleware.
     /// </summary>
-    /// <typeparam name="TRootViewModel">The type of the root view model.</typeparam>
+    /// <typeparam name="TRootObject">The type of the root object.</typeparam>
     /// <typeparam name="TIocContainerAdapter">The type of the ioc container adapter.</typeparam>    
-    public class NavigationMiddleware<TRootViewModel, TIocContainerAdapter> : 
-        IMiddleware<IBootstrapperWithContainerAdapter<TRootViewModel, TIocContainerAdapter>>        
-        where TRootViewModel : class
+    public class NavigationMiddleware<TRootObject, TIocContainerAdapter> : 
+        IMiddleware<IBootstrapperWithContainerAdapter<TRootObject, TIocContainerAdapter>>        
+        where TRootObject : class
         where TIocContainerAdapter : class, IIocContainerAdapter, IIocContainer, IBootstrapperAdapter, new()
     {
         private NavigationService _navigationService = new NavigationService();
@@ -31,7 +31,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// <param name="container"></param>
         public virtual void OnRegisterRoot(INavigationService navigationService, IIocContainer container)
         {
-            navigationService.RegisterViewModel<TRootViewModel>(container).AsRoot();
+            navigationService.RegisterViewModel<TRootObject>(container).AsRoot();
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// </summary>
         /// <param name="object">The object.</param>
         /// <returns></returns>
-        public IBootstrapperWithContainerAdapter<TRootViewModel, TIocContainerAdapter> Apply(
-            IBootstrapperWithContainerAdapter<TRootViewModel, TIocContainerAdapter> @object)
+        public IBootstrapperWithContainerAdapter<TRootObject, TIocContainerAdapter> Apply(
+            IBootstrapperWithContainerAdapter<TRootObject, TIocContainerAdapter> @object)
         {            
             @object.ContainerAdapter.RegisterInstance(NavigationService);
             OnRegisterRoot(NavigationService, @object.ContainerAdapter);
@@ -66,7 +66,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         {
             var viewModelTypes = assemblies.ToArray()
                 .SelectMany(assembly => assembly.DefinedTypes)
-                .Where(typeInfo => typeInfo.Equals(typeof(TRootViewModel).GetTypeInfo()) == false && typeInfo.IsClass)
+                .Where(typeInfo => typeInfo.Equals(typeof(TRootObject).GetTypeInfo()) == false && typeInfo.IsClass)
                 .Select(typeInfo => new
                 {
                     Type = typeInfo.AsType(),

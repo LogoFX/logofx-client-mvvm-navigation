@@ -12,17 +12,17 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// <summary>
         /// Uses the navigation middleware.
         /// </summary>
-        /// <typeparam name="TRootViewModel">The type of the root view model.</typeparam>
+        /// <typeparam name="TRootObject">The type of the root object.</typeparam>
         /// <typeparam name="TIocContainerAdapter">The type of the ioc container adapter.</typeparam>
         /// <param name="bootstrapper">The bootstrapper.</param>
         /// <returns></returns>
-        public static IBootstrapperWithContainerAdapter<TRootViewModel, TIocContainerAdapter>            
-            UseNavigation<TRootViewModel, TIocContainerAdapter>(
-            this IBootstrapperWithContainerAdapter<TRootViewModel, TIocContainerAdapter> bootstrapper) 
-            where TRootViewModel : class 
+        public static IBootstrapperWithContainerAdapter<TRootObject, TIocContainerAdapter>            
+            UseNavigation<TRootObject, TIocContainerAdapter>(
+            this IBootstrapperWithContainerAdapter<TRootObject, TIocContainerAdapter> bootstrapper) 
+            where TRootObject : class 
             where TIocContainerAdapter : class, IIocContainer, IIocContainerAdapter, IBootstrapperAdapter, new()
         {
-            return bootstrapper.Use(new NavigationMiddleware<TRootViewModel, TIocContainerAdapter>());
+            return bootstrapper.Use(new NavigationMiddleware<TRootObject, TIocContainerAdapter>());
         }
     }
 }
