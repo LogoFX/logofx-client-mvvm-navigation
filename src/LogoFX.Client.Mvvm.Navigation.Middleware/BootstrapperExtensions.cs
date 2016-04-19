@@ -1,5 +1,4 @@
 using LogoFX.Bootstrapping;
-using LogoFX.Client.Bootstrapping.Adapters.Contracts;
 using Solid.Practices.IoC;
 
 namespace LogoFX.Client.Mvvm.Navigation
@@ -11,18 +10,18 @@ namespace LogoFX.Client.Mvvm.Navigation
     {
         /// <summary>
         /// Uses the navigation middleware.
-        /// </summary>
-        /// <typeparam name="TRootObject">The type of the root object.</typeparam>
+        /// </summary>        
         /// <typeparam name="TIocContainerAdapter">The type of the ioc container adapter.</typeparam>
+        /// <typeparam name="TRootObject">The type of root object.</typeparam>
         /// <param name="bootstrapper">The bootstrapper.</param>
         /// <returns></returns>
-        public static IBootstrapperWithContainerAdapter<TRootObject, TIocContainerAdapter>            
-            UseNavigation<TRootObject, TIocContainerAdapter>(
-            this IBootstrapperWithContainerAdapter<TRootObject, TIocContainerAdapter> bootstrapper) 
-            where TRootObject : class 
-            where TIocContainerAdapter : class, IIocContainer, IIocContainerAdapter, IBootstrapperAdapter, new()
+        public static IBootstrapperWithContainerAdapter<TIocContainerAdapter>            
+            UseNavigation<TIocContainerAdapter, TRootObject>(
+            this IBootstrapperWithContainerAdapter<TIocContainerAdapter> bootstrapper)             
+            where TIocContainerAdapter : class, IIocContainer
+            where TRootObject : class
         {
-            return bootstrapper.Use(new NavigationMiddleware<TRootObject, TIocContainerAdapter>());
+            return bootstrapper.Use(new NavigationMiddleware<TIocContainerAdapter, TRootObject>());
         }
     }
 }
