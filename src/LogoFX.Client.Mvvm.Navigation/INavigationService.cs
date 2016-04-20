@@ -14,7 +14,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// <typeparam name="T">Type of view model</typeparam>
         /// <param name="container">The container.</param>
         /// <returns></returns>
-        IRootableNavigationBuilder<T> RegisterViewModel<T>(IIocContainer container) where T : class;
+        IRootableNavigationBuilder<T> RegisterViewModel<T>(IIocContainer container) where T : class;        
 
         /// <summary>
         /// Registers the view model instance for navigation.

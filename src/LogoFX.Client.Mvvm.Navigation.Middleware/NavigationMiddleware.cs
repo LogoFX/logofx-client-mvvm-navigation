@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using LogoFX.Bootstrapping;
-using LogoFX.Client.Bootstrapping.Adapters.Contracts;
 using Solid.Practices.IoC;
 using Solid.Practices.Middleware;
 
@@ -13,16 +12,15 @@ namespace LogoFX.Client.Mvvm.Navigation
     /// </summary>
     /// <typeparam name="TRootObject">The type of the root object.</typeparam>
     /// <typeparam name="TIocContainerAdapter">The type of the ioc container adapter.</typeparam>    
-    public class NavigationMiddleware<TRootObject, TIocContainerAdapter> : 
-        IMiddleware<IBootstrapperWithContainerAdapter<TRootObject, TIocContainerAdapter>>        
-        where TRootObject : class
-        where TIocContainerAdapter : class, IIocContainerAdapter, IIocContainer, IBootstrapperAdapter, new()
+    public class NavigationMiddleware<TIocContainerAdapter, TRootObject> : 
+        IMiddleware<IBootstrapperWithContainerAdapter<TIocContainerAdapter>>                
+        where TIocContainerAdapter : class, IIocContainer where TRootObject : class
     {
         private NavigationService _navigationService = new NavigationService();
         private INavigationService NavigationService
         {
             get { return _navigationService ?? (_navigationService = new NavigationService()); }
-        }       
+        }
 
         /// <summary>
         /// Override this method to inject custom logic during root view model registration.
@@ -53,8 +51,8 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// </summary>
         /// <param name="object">The object.</param>
         /// <returns></returns>
-        public IBootstrapperWithContainerAdapter<TRootObject, TIocContainerAdapter> Apply(
-            IBootstrapperWithContainerAdapter<TRootObject, TIocContainerAdapter> @object)
+        public IBootstrapperWithContainerAdapter<TIocContainerAdapter> Apply(
+            IBootstrapperWithContainerAdapter<TIocContainerAdapter> @object)
         {            
             @object.ContainerAdapter.RegisterInstance(NavigationService);
             OnRegisterRoot(NavigationService, @object.ContainerAdapter);
