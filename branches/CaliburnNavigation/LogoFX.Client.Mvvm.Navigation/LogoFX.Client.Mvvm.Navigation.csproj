@@ -51,14 +51,30 @@
     <Compile Include="NavigationParameter.cs" />
     <Compile Include="NavigationService.AttributeBuilder.cs" />
     <Compile Include="NavigationService.cs" />
-    <Compile Include="NavigationService.GenericBuilderOfT.cs" />
-    <Compile Include="NavigationService.INavigationService.cs" />
-    <Compile Include="NavigationService.InstanceBuilderOfT.cs" />
-    <Compile Include="NavigationService.NavigationBuilder.cs" />
-    <Compile Include="NavigationService.NavigationBuilderOfT.cs" />
-    <Compile Include="NavigationService.NavigationParameterOfT.cs" />
-    <Compile Include="NavigationService.ResolverBuilderOfT.cs" />
-    <Compile Include="NavigationService.RootableNavigationBuilderOfT.cs" />
+    <Compile Include="NavigationService.GenericBuilderOfT.cs">
+      <DependentUpon>NavigationService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NavigationService.INavigationService.cs">
+      <DependentUpon>NavigationService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NavigationService.InstanceBuilderOfT.cs">
+      <DependentUpon>NavigationService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NavigationService.NavigationBuilder.cs">
+      <DependentUpon>NavigationService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NavigationService.NavigationBuilderOfT.cs">
+      <DependentUpon>NavigationService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NavigationService.NavigationParameterOfT.cs">
+      <DependentUpon>NavigationService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NavigationService.ResolverBuilderOfT.cs">
+      <DependentUpon>NavigationService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NavigationService.RootableNavigationBuilderOfT.cs">
+      <DependentUpon>NavigationService.cs</DependentUpon>
+    </Compile>
     <Compile Include="NavigationStoppedEventHandler.cs" />
     <Compile Include="NavigationSynonymAttribute.cs" />
     <Compile Include="NavigationViewModelAttribute.cs" />
