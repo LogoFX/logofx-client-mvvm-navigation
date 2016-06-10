@@ -25,9 +25,9 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// </returns>
         public bool Handled { get; set; }
 
-        private NavigationFailedEventArgs()
+        public NavigationFailedEventArgs(Exception err)
         {
-            
+            Exception = err;
         }
     }
 }

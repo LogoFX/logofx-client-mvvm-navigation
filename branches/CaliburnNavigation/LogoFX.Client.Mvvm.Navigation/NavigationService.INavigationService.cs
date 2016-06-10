@@ -5,6 +5,9 @@ namespace LogoFX.Client.Mvvm.Navigation
 {
     public sealed partial class NavigationService : INavigationService
     {
+        private Type _sourcePageType;
+        private Type _currentSourcePageType;
+
         IRootableNavigationBuilder<T> INavigationService.RegisterViewModel<T>(IIocContainer container)
         {
             var builder = new GenericBuilder<T>(container);
@@ -44,22 +47,59 @@ namespace LogoFX.Client.Mvvm.Navigation
 
         public event NavigationStoppedEventHandler NavigationStopped;
 
-        Type INavigationService.SourcePageType { get; set; }
+        Type INavigationService.SourcePageType
+        {
+            get { return _sourcePageType; }
+            set
+            {
+                if (_sourcePageType == value)
+                {
+                    return;
+                }
 
-        Type INavigationService.CurrentSourcePageType { get; }
+                NavigateInternal(NavigationMode.New, value, null);
+            }
+        }
 
-        bool INavigationService.CanGoForward { get; }
+        Type INavigationService.CurrentSourcePageType
+        {
+            get { return _currentSourcePageType; }
+        }
 
-        bool INavigationService.CanGoBack { get; }
+        bool INavigationService.CanGoForward
+        {
+            get
+            {
+                int index = _currentIndex + 1;
+                while (index < _history.Count && _history[index].Skip)
+                {
+                    ++index;
+                }
+                return index < _history.Count;
+            }
+        }
+
+        bool INavigationService.CanGoBack
+        {
+            get
+            {
+                int index = _currentIndex - 1;
+                while (index > 0 && _history[index].Skip)
+                {
+                    --index;
+                }
+                return index >= 0;
+            }
+        }
 
         bool INavigationService.Navigate(Type sourcePageType)
         {
-            return NavigateInternal(sourcePageType, null) != null;
+            return NavigateInternal(NavigationMode.New, sourcePageType, null) != null;
         }
 
         bool INavigationService.Navigate(Type sourcePageType, object parameter)
         {
-            return NavigateInternal(sourcePageType, parameter) != null;
+            return NavigateInternal(NavigationMode.New, sourcePageType, parameter) != null;
         }
 
         void INavigationService.GoForward()

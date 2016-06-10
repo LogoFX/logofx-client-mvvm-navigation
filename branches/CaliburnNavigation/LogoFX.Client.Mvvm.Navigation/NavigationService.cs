@@ -98,10 +98,10 @@ namespace LogoFX.Client.Mvvm.Navigation
 
         private NavigationParameter CreateParameter<T>(object argument)
         {
-            return new NavigationParameter<T>(this/*, noTrack*/, argument);
+            return new NavigationParameter<T>(this, argument);
         }
 
-        private INavigationConductor ActivateConductorAsync(Type conductorType)
+        private INavigationConductor ActivateConductorAsync(NavigationMode mode, Type conductorType)
         {
             var builder = GetBuilder(conductorType);
 
@@ -117,7 +117,7 @@ namespace LogoFX.Client.Mvvm.Navigation
 
             try
             {
-                result = (INavigationConductor) NavigateInternal(conductorType, null, true);
+                result = (INavigationConductor) NavigateInternal(mode, conductorType, null, true);
             }
 
             finally
@@ -129,8 +129,25 @@ namespace LogoFX.Client.Mvvm.Navigation
             return result;
         }
 
-        private object NavigateInternal(Type itemType, object argument, bool noCheckHistory = false)
+        private object NavigateInternal(NavigationMode mode, Type itemType, object argument, bool noCheckHistory = false)
         {
+            var sourcePageType = _sourcePageType;
+            _sourcePageType = itemType;
+
+            NavigationEventArgs navEventArgs = new NavigationEventArgs();
+            navEventArgs.NavigationMode = mode;
+            navEventArgs.Parameter = argument;
+            navEventArgs.SourcePageType = itemType;
+
+            var cancelEventArgs = new NavigatingCancelEventArgs(mode);
+            OnNavigating(cancelEventArgs);
+            if (cancelEventArgs.Cancel)
+            {
+                OnNavigationStopped(navEventArgs);
+                _sourcePageType = sourcePageType;
+                return null;
+            }
+
             if (_currentIndex >= 0 && _history.Count > 0 && !noCheckHistory)
             {
                 //if current is same v-m
@@ -153,6 +170,10 @@ namespace LogoFX.Client.Mvvm.Navigation
                         _currentIndex = index;
                         UpdateProperties();
                     }
+
+                    _currentSourcePageType = itemType;
+                    navEventArgs.Content = obj;
+                    OnNavigated(navEventArgs);
                     return obj;
                 }
             }
@@ -161,12 +182,18 @@ namespace LogoFX.Client.Mvvm.Navigation
             INavigationConductor conductor;
             try
             {
-                conductor = ActivateConductorAsync(builder.ConductorType);
+                conductor = ActivateConductorAsync(mode, builder.ConductorType);
             }
 
             catch (Exception err)
             {
-                //Trace.TraceError("ActivateConductorAsync throws error: {0}", err);                
+                //Trace.TraceError("ActivateConductorAsync throws error: {0}", err);
+                var failedEventArgs = new NavigationFailedEventArgs(err);
+                OnNavigationFailed(failedEventArgs);
+                if (failedEventArgs.Handled)
+                {
+                    return null;
+                }
                 throw;
             }
 
@@ -196,6 +223,9 @@ namespace LogoFX.Client.Mvvm.Navigation
                 UpdateProperties();
             }
 
+            _currentSourcePageType = itemType;
+            navEventArgs.Content = viewModel;
+            OnNavigated(navEventArgs);
             return viewModel;
         }
 
@@ -215,7 +245,7 @@ namespace LogoFX.Client.Mvvm.Navigation
             StopTrack = true;
             try
             {
-                NavigateInternal(historyItem.Type, historyItem.Argument, true);
+                NavigateInternal(NavigationMode.Forward, historyItem.Type, historyItem.Argument, true);
             }
             finally
             {
@@ -240,7 +270,7 @@ namespace LogoFX.Client.Mvvm.Navigation
             StopTrack = true;
             try
             {
-                NavigateInternal(historyItem.Type, historyItem.Argument, true);
+                NavigateInternal(NavigationMode.Back, historyItem.Type, historyItem.Argument, true);
             }
 
             finally
@@ -303,6 +333,51 @@ namespace LogoFX.Client.Mvvm.Navigation
             NotifyOfPropertyChange(() => ((INavigationService) this).CanGoForward);
             NotifyOfPropertyChange(() => ((INavigationService) this).SourcePageType);
             NotifyOfPropertyChange(() => ((INavigationService) this).CurrentSourcePageType);
+        }
+
+        private void OnNavigating(NavigatingCancelEventArgs e)
+        {
+            var handler = Navigating;
+
+            if (handler == null)
+            {
+                return;
+            }
+
+            handler(this, e);
+        }
+
+        private void OnNavigated(NavigationEventArgs e)
+        {
+            var handler = Navigated;
+            if (handler == null)
+            {
+                return;
+            }
+
+            handler(this, e);
+        }
+
+        private void OnNavigationStopped(NavigationEventArgs e)
+        {
+            var handler = NavigationStopped;
+            if (handler == null)
+            {
+                return;
+            }
+
+            handler(this, e);
+        }
+
+        private void OnNavigationFailed(NavigationFailedEventArgs e)
+        {
+            var handler = NavigationFailed;
+            if (handler == null)
+            {
+                return;
+            }
+
+            handler(this, e);
         }
 
         #endregion
