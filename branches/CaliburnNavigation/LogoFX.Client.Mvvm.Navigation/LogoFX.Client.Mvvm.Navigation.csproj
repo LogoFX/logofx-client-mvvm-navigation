@@ -49,7 +49,9 @@
     <Compile Include="NavigationFailedEventHandler.cs" />
     <Compile Include="NavigationMode.cs" />
     <Compile Include="NavigationParameter.cs" />
-    <Compile Include="NavigationService.AttributeBuilder.cs" />
+    <Compile Include="NavigationService.AttributeBuilder.cs">
+      <DependentUpon>NavigationService.cs</DependentUpon>
+    </Compile>
     <Compile Include="NavigationService.cs" />
     <Compile Include="NavigationService.GenericBuilderOfT.cs">
       <DependentUpon>NavigationService.cs</DependentUpon>

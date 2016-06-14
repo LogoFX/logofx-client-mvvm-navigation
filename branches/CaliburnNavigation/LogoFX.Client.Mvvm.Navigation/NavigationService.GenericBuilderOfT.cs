@@ -6,16 +6,16 @@ namespace LogoFX.Client.Mvvm.Navigation
     {
         private sealed class GenericBuilder<T> : RootableNavigationBuilder<T> where T : class
         {
-            private readonly IIocContainer _container;
+            private readonly IIocContainerResolver _resolver;
 
-            public GenericBuilder(IIocContainer container)
+            public GenericBuilder(IIocContainerResolver resolver)
             {
-                _container = container;
+                _resolver = resolver;
             }
 
             protected override T GetValueInternal()
             {
-                return _container.Resolve<T>();
+                return _resolver.Resolve<T>();
             }
         }
     }

@@ -8,12 +8,12 @@ namespace LogoFX.Client.Mvvm.Navigation
         private sealed class AttributeBuilder : NavigationBuilder
         {
             private readonly Type _vmType;
-            private readonly IIocContainer _container;
+            private readonly IIocContainerResolver _resolver;
 
-            public AttributeBuilder(Type vmType, NavigationViewModelAttribute attr, IIocContainer container)
+            public AttributeBuilder(Type vmType, NavigationViewModelAttribute attr, IIocContainerResolver resolver)
             {
                 _vmType = vmType;
-                _container = container;
+                _resolver = resolver;
 
                 IsSingleton = attr.IsSingleton;
                 ConductorType = attr.ConductorType;
@@ -22,7 +22,7 @@ namespace LogoFX.Client.Mvvm.Navigation
 
             protected override object GetValue()
             {
-                return _container.Resolve(_vmType);
+                return _resolver.Resolve(_vmType);
             }
         }
     }

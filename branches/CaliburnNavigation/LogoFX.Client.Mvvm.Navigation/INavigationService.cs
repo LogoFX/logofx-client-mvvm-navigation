@@ -9,9 +9,9 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// Registers the view model for navigation using container-resolution strategy
         /// </summary>
         /// <typeparam name="T">Type of view model</typeparam>
-        /// <param name="container">The container.</param>
+        /// <param name="resolver">The IoC container resolver.</param>
         /// <returns></returns>
-        IRootableNavigationBuilder<T> RegisterViewModel<T>(IIocContainer container) where T : class;
+        IRootableNavigationBuilder<T> RegisterViewModel<T>(IIocContainerResolver resolver) where T : class;
 
         /// <summary>
         /// Registers the view model instance for navigation.
@@ -35,7 +35,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// <param name="argument"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        NavigationParameter CreateParameter<T>(object argument/*, bool noTrack = false*/);
+        NavigationParameter CreateParameter<T>(object argument);
 
         /// <summary>
         /// Creates navigation parameter using navigation target.

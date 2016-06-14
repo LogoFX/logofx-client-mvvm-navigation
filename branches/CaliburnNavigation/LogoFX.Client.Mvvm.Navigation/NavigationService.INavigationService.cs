@@ -8,9 +8,9 @@ namespace LogoFX.Client.Mvvm.Navigation
         private Type _sourcePageType;
         private Type _currentSourcePageType;
 
-        IRootableNavigationBuilder<T> INavigationService.RegisterViewModel<T>(IIocContainer container)
+        IRootableNavigationBuilder<T> INavigationService.RegisterViewModel<T>(IIocContainerResolver resolver)
         {
-            var builder = new GenericBuilder<T>(container);
+            var builder = new GenericBuilder<T>(resolver);
             _builders.Add(typeof(T), builder);
             return builder;
         }

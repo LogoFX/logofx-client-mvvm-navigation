@@ -78,8 +78,8 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="attribute">The attribute.</param>
-        /// <param name="container">The container.</param>
-        public void RegisterAttribute(Type type, NavigationViewModelAttribute attribute, IIocContainer container)
+        /// <param name="resolver">The IoC container resolver.</param>
+        public void RegisterAttribute(Type type, NavigationViewModelAttribute attribute, IIocContainerResolver resolver)
         {
             var types = new List<Type> { type };
             var synonymAttributes = type.GetTypeInfo().GetCustomAttributes<NavigationSynonymAttribute>(inherit: false);
@@ -87,7 +87,7 @@ namespace LogoFX.Client.Mvvm.Navigation
 
             foreach (var t in types)
             {
-                var builder = new AttributeBuilder(type, attribute, container);
+                var builder = new AttributeBuilder(type, attribute, resolver);
                 _builders.Add(t, builder);
             }
         }
