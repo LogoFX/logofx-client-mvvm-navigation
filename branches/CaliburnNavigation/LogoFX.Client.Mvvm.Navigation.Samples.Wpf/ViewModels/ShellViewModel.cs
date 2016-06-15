@@ -5,13 +5,14 @@ using LogoFX.Client.Mvvm.ViewModel.Services;
 namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
 {
     [UsedImplicitly]
-    public sealed class ShellViewModel : Conductor<IScreen>
+    public sealed class ShellViewModel : Conductor<IScreen>, INavigationConductor
     {
+        private readonly INavigationService _navigationService;
         private readonly IViewModelCreatorService _viewModelCreatorService;
 
-        public ShellViewModel(IViewModelCreatorService viewModelCreatorService)
+        public ShellViewModel(INavigationService navigationService)
         {
-            _viewModelCreatorService = viewModelCreatorService;
+            _navigationService = navigationService;
         }
 
         public override string DisplayName
@@ -24,8 +25,12 @@ namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
         {
             base.OnActivate();
 
-            var mainViewModel = _viewModelCreatorService.CreateViewModel<MainViewModel>();
-            ActivateItem(mainViewModel);
+            _navigationService.Navigate(typeof(MainViewModel));
+        }
+
+        public void NavigateTo(object viewModel, object argument)
+        {
+            ActivateItem((IScreen) viewModel);
         }
     }
 }

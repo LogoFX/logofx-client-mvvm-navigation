@@ -9,17 +9,15 @@ using LogoFX.Client.Mvvm.ViewModel.Services;
 namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
 {
     [UsedImplicitly]
-    [NavigationViewModel(ConductorType=typeof(ShellViewModel))]
+    [NavigationViewModel(ConductorType = typeof(ShellViewModel))]
     public sealed class MainViewModel : Conductor<IScreen>, INavigationConductor
     {
-        private readonly IViewModelCreatorService _viewModelCreatorService;
         private readonly INavigationService _navigationService;
 
         public MainViewModel(
             IViewModelCreatorService viewModelCreatorService,
             INavigationService navigationService)
         {
-            _viewModelCreatorService = viewModelCreatorService;
             _navigationService = navigationService;
         }
 
@@ -40,7 +38,7 @@ namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
 
         public void NavigateTo(object viewModel, object argument)
         {
-            throw new System.NotImplementedException();
+            ActivateItem((IScreen)viewModel);
         }
     }
 }
