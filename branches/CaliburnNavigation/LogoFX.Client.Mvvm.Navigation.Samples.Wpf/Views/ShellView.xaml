@@ -26,14 +26,14 @@
             <Button Grid.Column="0"
                     Width="100"
                     Height="25"
-                    Content="Previous">
+                    Content="&lt;-- Previous">
             </Button>
 
             <Button Grid.Column="1"
                     Width="100"
                     Height="25"
                     Margin="5,0,0,0"
-                    Content="Next">
+                    Content="Next --&gt;">
             </Button>
         </Grid>
         

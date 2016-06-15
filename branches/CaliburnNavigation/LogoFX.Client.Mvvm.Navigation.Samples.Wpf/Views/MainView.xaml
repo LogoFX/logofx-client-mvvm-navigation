@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels"
-             xmlns:micro="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:actions="clr-namespace:LogoFX.Client.Mvvm.View.Interactivity.Actions;assembly=LogoFX.Client.Mvvm.View.Platform"
              mc:Ignorable="d" 
@@ -86,6 +85,9 @@
                       VerticalAlignment="Stretch" />
         
         <Grid Grid.Column="2">
+            <TextBlock VerticalAlignment="Center" 
+                       HorizontalAlignment="Center"
+                       Text="Empty" />
             <ContentControl x:Name="ActiveItem" />
         </Grid>
     </Grid>
