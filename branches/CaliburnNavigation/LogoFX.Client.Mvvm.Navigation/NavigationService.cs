@@ -15,7 +15,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// <summary>
         /// The History Item.
         /// </summary>
-        private sealed class HistoryItem
+        private sealed class HistoryItem : INavigationStackEntry
         {
             /// <summary>
             /// Type of the navigation target.
@@ -23,12 +23,12 @@ namespace LogoFX.Client.Mvvm.Navigation
             public Type Type { get; private set; }
 
             /// <summary>
-            /// Gets the navigation argument.
+            /// Gets the navigation parameter.
             /// </summary>
             /// <value>
-            /// The navigation argument.
+            /// The navigation parameter.
             /// </value>
-            public object Argument { get; private set; }
+            public object Parameter { get; private set; }
 
             /// <summary>
             /// Gets or sets the navigation target.
@@ -38,19 +38,10 @@ namespace LogoFX.Client.Mvvm.Navigation
             /// </value>
             public WeakReference Object { get; set; }
 
-            /// <summary>
-            /// Gets or sets a value indicating whether this <see cref="HistoryItem"/> should be skipped.
-            /// </summary>
-            /// <value>
-            ///   <c>true</c> if skipped; otherwise, <c>false</c>.
-            /// </value>
-            public bool Skip { get; private set; }
-
-            public HistoryItem(Type type, object argument, bool skip)
+            public HistoryItem(Type type, object parameter)
             {
                 Type = type;
-                Argument = argument;
-                Skip = skip;
+                Parameter = parameter;
             }
         }
 
@@ -61,10 +52,13 @@ namespace LogoFX.Client.Mvvm.Navigation
         private int _stopTrack;
         private int _stopEvents;
 
-        private int _currentIndex = -1;
+        private INavigationStackEntry _currentItem;
 
-        private readonly List<HistoryItem> _history =
-            new List<HistoryItem>();
+        private readonly List<INavigationStackEntry> _backStack =
+            new List<INavigationStackEntry>();
+
+        private readonly List<INavigationStackEntry> _forwardStack =
+            new List<INavigationStackEntry>();
 
         private readonly Dictionary<Type, INavigationBuilder> _builders =
             new Dictionary<Type, INavigationBuilder>();
@@ -101,7 +95,7 @@ namespace LogoFX.Client.Mvvm.Navigation
             return new NavigationParameter<T>(this, argument);
         }
 
-        private INavigationConductor ActivateConductorAsync(NavigationMode mode, Type conductorType)
+        private INavigationConductor ActivateConductorAsync(Type conductorType)
         {
             var builder = GetBuilder(conductorType);
 
@@ -112,69 +106,57 @@ namespace LogoFX.Client.Mvvm.Navigation
 
             INavigationConductor result;
 
-            StopTrack = true;
             StopEvents = true;
 
             try
             {
-                result = (INavigationConductor) NavigateInternal(mode, conductorType, null, true);
+                result = (INavigationConductor) NavigateInternal(NavigationMode.Refresh, conductorType, null, true);
             }
 
             finally
             {
                 StopEvents = false;
-                StopTrack = false;
             }
 
             return result;
         }
 
-        private object NavigateInternal(NavigationMode mode, Type itemType, object argument, bool noCheckHistory = false)
+        private object NavigateInternal(NavigationMode mode, Type itemType, object parameter, bool noCheckHistory = false)
         {
-            var sourcePageType = _sourcePageType;
-            _sourcePageType = itemType;
-
-            NavigationEventArgs navEventArgs = new NavigationEventArgs();
-            navEventArgs.NavigationMode = mode;
-            navEventArgs.Parameter = argument;
-            navEventArgs.SourcePageType = itemType;
-
-            var cancelEventArgs = new NavigatingCancelEventArgs(mode);
-            OnNavigating(cancelEventArgs);
-            if (cancelEventArgs.Cancel)
+            NavigationEventArgs navEventArgs = new NavigationEventArgs
             {
-                OnNavigationStopped(navEventArgs);
-                _sourcePageType = sourcePageType;
-                return null;
-            }
+                NavigationMode = mode,
+                Parameter = parameter,
+                SourcePageType = itemType
+            };
 
-            if (_currentIndex >= 0 && _history.Count > 0 && !noCheckHistory)
+            if (mode != NavigationMode.Refresh)
             {
-                //if current is same v-m
-                int index = _currentIndex;
-                while (index >= 0 && _history[index].Skip)
+                var sourcePageType = _sourcePageType;
+                _sourcePageType = itemType;
+
+                var cancelEventArgs = new NavigatingCancelEventArgs(mode);
+                OnNavigating(cancelEventArgs);
+                if (cancelEventArgs.Cancel)
                 {
-                    --index;
+                    OnNavigationStopped(navEventArgs);
+                    _sourcePageType = sourcePageType;
+                    return null;
                 }
-                HistoryItem historyItem = _history[index];
-                var obj = historyItem.Object.Target;
-                if (historyItem.Type == itemType && historyItem.Argument == argument && obj != null)
-                {
-                    if (index != _currentIndex)
-                    {
-                        var obj2 = obj as INavigationViewModel;
-                        if (!StopEvents && obj2 != null)
-                        {
-                            obj2.OnNavigated(NavigationMode.New, argument);
-                        }
-                        _currentIndex = index;
-                        UpdateProperties();
-                    }
 
-                    _currentSourcePageType = itemType;
-                    navEventArgs.Content = obj;
-                    OnNavigated(navEventArgs);
-                    return obj;
+                if (!noCheckHistory && _currentItem != null)
+                {
+                    //if current is same v-m
+                    var obj = ((HistoryItem) _currentItem).Object.Target;
+                    if (_currentItem.Type == itemType &&
+                        _currentItem.Parameter == parameter &&
+                        obj != null)
+                    {
+                        _currentSourcePageType = itemType;
+                        navEventArgs.Content = obj;
+                        OnNavigated(navEventArgs);
+                        return obj;
+                    }
                 }
             }
 
@@ -182,7 +164,7 @@ namespace LogoFX.Client.Mvvm.Navigation
             INavigationConductor conductor;
             try
             {
-                conductor = ActivateConductorAsync(mode, builder.ConductorType);
+                conductor = ActivateConductorAsync(builder.ConductorType);
             }
 
             catch (Exception err)
@@ -198,30 +180,41 @@ namespace LogoFX.Client.Mvvm.Navigation
             }
 
             object viewModel = builder.GetValue();
-            conductor.NavigateTo(viewModel, argument);
+            conductor.NavigateTo(viewModel, parameter);
 
             var navigationViewModel = viewModel as INavigationViewModel;
             if (!StopEvents && navigationViewModel != null)
             {
-                navigationViewModel.OnNavigated(NavigationMode.New, argument);
+                navigationViewModel.OnNavigated(NavigationMode.New, parameter);
             }
 
-            if (!StopTrack)
+            switch (mode)
             {
-                ++_currentIndex;
-                Debug.Assert(_history.Count >= _currentIndex);
-                if (_history.Count != _currentIndex)
-                {
-                    _history.RemoveRange(_currentIndex, _history.Count - _currentIndex);
-                }
-
-                var historyItem = new HistoryItem(itemType, argument, builder.NotRemember)
-                {
-                    Object = new WeakReference(viewModel)
-                };
-                _history.Insert(_currentIndex, historyItem);
-                UpdateProperties();
+                case NavigationMode.New:
+                    _forwardStack.Clear();
+                    _backStack.Add(_currentItem);
+                    _currentItem = new HistoryItem(itemType, parameter)
+                    {
+                        Object = new WeakReference(viewModel)
+                    };
+                    break;
+                case NavigationMode.Back:
+                    _forwardStack.Add(_currentItem);
+                    _currentItem = _backStack.Last();
+                    _backStack.Remove(_currentItem);
+                    break;
+                case NavigationMode.Forward:
+                    _backStack.Add(_currentItem);
+                    _currentItem = _forwardStack.First();
+                    _forwardStack.Remove(_currentItem);
+                    break;
+                case NavigationMode.Refresh:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
             }
+
+            UpdateProperties();
 
             _currentSourcePageType = itemType;
             navEventArgs.Content = viewModel;
@@ -234,23 +227,8 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// </summary>
         private void GoForwardInternal()
         {
-            HistoryItem historyItem;
-            do
-            {
-                ++_currentIndex;
-                historyItem = _history[_currentIndex];
-            } while (historyItem.Skip);
-
-            UpdateProperties();
-            StopTrack = true;
-            try
-            {
-                NavigateInternal(NavigationMode.Forward, historyItem.Type, historyItem.Argument, true);
-            }
-            finally
-            {
-                StopTrack = false;
-            }
+            var historyItem = _forwardStack.First();
+            NavigateInternal(NavigationMode.Forward, historyItem.Type, historyItem.Parameter, true);
         }
 
         /// <summary>
@@ -258,43 +236,8 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// </summary>
         private void GoBackInternal()
         {
-            HistoryItem historyItem;
-
-            do
-            {
-                --_currentIndex;
-                historyItem = _history[_currentIndex];
-            } while (historyItem.Skip);
-            UpdateProperties();
-
-            StopTrack = true;
-            try
-            {
-                NavigateInternal(NavigationMode.Back, historyItem.Type, historyItem.Argument, true);
-            }
-
-            finally
-            {
-                StopTrack = false;
-            }
-        }
-
-        private bool StopTrack
-        {
-            get { return _stopTrack > 0; }
-            set
-            {
-                if (value)
-                {
-                    ++_stopTrack;
-                }
-                else
-                {
-                    --_stopTrack;
-                }
-
-                Debug.Assert(_stopTrack >= 0);
-            }
+            var historyItem = _backStack.Last();
+            NavigateInternal(NavigationMode.Back, historyItem.Type, historyItem.Parameter, true);
         }
 
         private bool StopEvents

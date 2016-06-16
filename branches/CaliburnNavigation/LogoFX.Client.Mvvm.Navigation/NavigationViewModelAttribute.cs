@@ -23,13 +23,5 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// <c>true</c> if this instance is singleton; otherwise, <c>false</c>.
         /// </value>
         public bool IsSingleton { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether state should be remembered between the navigations.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if state should be remembered between the navigations; otherwise, <c>false</c>.
-        /// </value>
-        public bool NotRemember { get; set; }
     }
 }

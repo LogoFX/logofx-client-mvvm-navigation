@@ -17,7 +17,6 @@ namespace LogoFX.Client.Mvvm.Navigation
 
                 IsSingleton = attr.IsSingleton;
                 ConductorType = attr.ConductorType;
-                NotRemember = attr.NotRemember;
             }
 
             protected override object GetValue()

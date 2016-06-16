@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using Solid.Practices.IoC;
 
 namespace LogoFX.Client.Mvvm.Navigation
 {
-    public interface INavigationService
+    public interface INavigationService : INotifyPropertyChanged
     {
         /// <summary>
         /// Registers the view model for navigation using container-resolution strategy
@@ -109,6 +111,16 @@ namespace LogoFX.Client.Mvvm.Navigation
         ///   Navigates back.
         /// </summary>
         void GoBack();
+
+        /// <summary>
+        /// Gets a collection of PageStackEntry instances representing the backward navigation history of the Frame.
+        /// </summary>
+        IList<INavigationStackEntry> BackStack { get; }
+
+        /// <summary>
+        /// Gets a collection of PageStackEntry instances representing the forward navigation history of the Frame.
+        /// </summary>
+        IList<INavigationStackEntry> ForwardStack { get; }
 
         /// <summary>
         /// Stores the frame navigation state in local settings if it can.

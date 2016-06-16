@@ -24,14 +24,6 @@ namespace LogoFX.Client.Mvvm.Navigation
         bool IsRoot { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the state should be preserved between navigations
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if the state should be preserved between navigations; otherwise, <c>false</c>.
-        /// </value>
-        bool NotRemember { get; }
-
-        /// <summary>
         /// Gets the navigation target
         /// </summary>
         /// <returns>Navigation target</returns>

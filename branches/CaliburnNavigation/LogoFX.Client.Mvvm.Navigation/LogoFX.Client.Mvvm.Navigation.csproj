@@ -39,6 +39,7 @@
     <Compile Include="INavigationConductor.cs" />
     <Compile Include="INavigationEventArgs.cs" />
     <Compile Include="INavigationService.cs" />
+    <Compile Include="INavigationStackEntry.cs" />
     <Compile Include="INavigationViewModel.cs" />
     <Compile Include="IRootableNavigationBuilderOfT.cs" />
     <Compile Include="NavigatedEventHandler.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="NavigationService.RootableNavigationBuilderOfT.cs">
       <DependentUpon>NavigationService.cs</DependentUpon>
     </Compile>
+    <Compile Include="NavigationStackEntry.cs" />
     <Compile Include="NavigationStoppedEventHandler.cs" />
     <Compile Include="NavigationSynonymAttribute.cs" />
     <Compile Include="NavigationViewModelAttribute.cs" />

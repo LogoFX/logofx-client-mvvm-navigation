@@ -45,8 +45,6 @@ namespace LogoFX.Client.Mvvm.Navigation
                 }
             }
 
-            public bool NotRemember { get; protected set; }
-
             object INavigationBuilder.GetValue()
             {
                 if (IsSingleton)

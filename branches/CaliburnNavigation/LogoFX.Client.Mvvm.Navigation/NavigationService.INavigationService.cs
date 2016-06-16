@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Solid.Practices.IoC;
 
 namespace LogoFX.Client.Mvvm.Navigation
@@ -68,28 +69,12 @@ namespace LogoFX.Client.Mvvm.Navigation
 
         bool INavigationService.CanGoForward
         {
-            get
-            {
-                int index = _currentIndex + 1;
-                while (index < _history.Count && _history[index].Skip)
-                {
-                    ++index;
-                }
-                return index < _history.Count;
-            }
+            get { return _forwardStack.Count > 0; }
         }
 
         bool INavigationService.CanGoBack
         {
-            get
-            {
-                int index = _currentIndex - 1;
-                while (index > 0 && _history[index].Skip)
-                {
-                    --index;
-                }
-                return index >= 0;
-            }
+            get { return _backStack.Count > 0; }
         }
 
         bool INavigationService.Navigate(Type sourcePageType)
@@ -110,6 +95,16 @@ namespace LogoFX.Client.Mvvm.Navigation
         void INavigationService.GoBack()
         {
             GoBackInternal();
+        }
+
+        public IList<INavigationStackEntry> BackStack
+        {
+            get { return _backStack; }
+        }
+
+        public IList<INavigationStackEntry> ForwardStack
+        {
+            get { return _forwardStack; }
         }
 
         bool INavigationService.SuspendState()

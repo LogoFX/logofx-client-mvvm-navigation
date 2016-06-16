@@ -1,5 +1,7 @@
-﻿using Caliburn.Micro;
+﻿using System.Windows.Input;
+using Caliburn.Micro;
 using JetBrains.Annotations;
+using LogoFX.Client.Mvvm.Commanding;
 using LogoFX.Client.Mvvm.ViewModel.Services;
 
 namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
@@ -13,6 +15,40 @@ namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
         public ShellViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
+        }
+
+        private ICommand _navigateBack;
+
+        public ICommand NavigateBack
+        {
+            get
+            {
+                return _navigateBack ??
+                       (_navigateBack = ActionCommand
+                           .When(() => _navigationService.CanGoBack)
+                           .Do(() =>
+                           {
+                               _navigationService.GoBack();
+                           })
+                           .RequeryOnPropertyChanged(_navigationService, () => _navigationService.CanGoBack));
+            }
+        }
+
+        private ICommand _navigateForward;
+
+        public ICommand NavigateForward
+        {
+            get
+            {
+                return _navigateForward ??
+                       (_navigateForward = ActionCommand
+                           .When(() => _navigationService.CanGoForward)
+                           .Do(() =>
+                           {
+                               _navigationService.GoForward();
+                           })
+                           .RequeryOnPropertyChanged(_navigationService, () => _navigationService.CanGoForward));
+            }
         }
 
         public override string DisplayName
