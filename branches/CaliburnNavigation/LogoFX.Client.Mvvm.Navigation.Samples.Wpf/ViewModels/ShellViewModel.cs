@@ -2,7 +2,6 @@
 using Caliburn.Micro;
 using JetBrains.Annotations;
 using LogoFX.Client.Mvvm.Commanding;
-using LogoFX.Client.Mvvm.ViewModel.Services;
 
 namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
 {
@@ -10,21 +9,20 @@ namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
     public sealed class ShellViewModel : Conductor<IScreen>, INavigationConductor
     {
         private readonly INavigationService _navigationService;
-        private readonly IViewModelCreatorService _viewModelCreatorService;
 
         public ShellViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
         }
 
-        private ICommand _navigateBack;
+        private ICommand _navigateBackCommand;
 
-        public ICommand NavigateBack
+        public ICommand NavigateBackCommand
         {
             get
             {
-                return _navigateBack ??
-                       (_navigateBack = ActionCommand
+                return _navigateBackCommand ??
+                       (_navigateBackCommand = ActionCommand
                            .When(() => _navigationService.CanGoBack)
                            .Do(() =>
                            {
@@ -34,14 +32,14 @@ namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
             }
         }
 
-        private ICommand _navigateForward;
+        private ICommand _navigateForwardCommand;
 
-        public ICommand NavigateForward
+        public ICommand NavigateForwardCommand
         {
             get
             {
-                return _navigateForward ??
-                       (_navigateForward = ActionCommand
+                return _navigateForwardCommand ??
+                       (_navigateForwardCommand = ActionCommand
                            .When(() => _navigationService.CanGoForward)
                            .Do(() =>
                            {

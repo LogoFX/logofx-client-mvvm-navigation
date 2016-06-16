@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:actions="clr-namespace:LogoFX.Client.Mvvm.View.Interactivity.Actions;assembly=LogoFX.Client.Mvvm.View.Platform"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:ShellViewModel}"
         WindowState="Maximized"
@@ -27,6 +29,12 @@
                     Width="100"
                     Height="25"
                     Content="&lt;-- Back">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <actions:ExecuteCommandAction Command="{Binding Path=NavigateBackCommand, Mode=OneTime}"
+                                                      Parameter="{x:Type viewModels:Page1ViewModel}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </Button>
 
             <Button Grid.Column="1"
@@ -34,6 +42,12 @@
                     Height="25"
                     Margin="5,0,0,0"
                     Content="Forward --&gt;">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <actions:ExecuteCommandAction Command="{Binding Path=NavigateForwardCommand, Mode=OneTime}"
+                                                      Parameter="{x:Type viewModels:Page1ViewModel}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </Button>
         </Grid>
         

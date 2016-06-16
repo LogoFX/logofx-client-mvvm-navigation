@@ -192,7 +192,10 @@ namespace LogoFX.Client.Mvvm.Navigation
             {
                 case NavigationMode.New:
                     _forwardStack.Clear();
-                    _backStack.Add(_currentItem);
+                    if (_currentItem != null)
+                    {
+                        _backStack.Add(_currentItem);
+                    }
                     _currentItem = new HistoryItem(itemType, parameter)
                     {
                         Object = new WeakReference(viewModel)
