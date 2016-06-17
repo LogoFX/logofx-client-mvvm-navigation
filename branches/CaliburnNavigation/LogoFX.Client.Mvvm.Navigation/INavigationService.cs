@@ -117,6 +117,8 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// </summary>
         IList<INavigationStackEntry> BackStack { get; }
 
+        INavigationStackEntry CurrentEntry { get; }
+
         /// <summary>
         /// Gets a collection of PageStackEntry instances representing the forward navigation history of the Frame.
         /// </summary>

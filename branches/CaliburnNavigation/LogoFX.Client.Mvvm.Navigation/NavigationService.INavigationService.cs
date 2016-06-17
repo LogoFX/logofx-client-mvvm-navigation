@@ -9,6 +9,11 @@ namespace LogoFX.Client.Mvvm.Navigation
         private Type _sourcePageType;
         private Type _currentSourcePageType;
 
+        private event NavigatedEventHandler NavigatedInternal;
+        private event NavigatingCancelEventHandler NavigatingInternal;
+        private event NavigationFailedEventHandler NavigationFailedInternal;
+        private event NavigationStoppedEventHandler NavigationStoppedInternal;
+
         IRootableNavigationBuilder<T> INavigationService.RegisterViewModel<T>(IIocContainerResolver resolver)
         {
             var builder = new GenericBuilder<T>(resolver);
@@ -40,13 +45,29 @@ namespace LogoFX.Client.Mvvm.Navigation
             return CreateParameter<T>(null);
         }
 
-        public event NavigatedEventHandler Navigated;
+        event NavigatedEventHandler INavigationService.Navigated
+        {
+            add { NavigatedInternal += value; }
+            remove { NavigatedInternal -= value; }
+        }
 
-        public event NavigatingCancelEventHandler Navigating;
+        event NavigatingCancelEventHandler INavigationService.Navigating
+        {
+            add { NavigatingInternal += value; }
+            remove { NavigatingInternal -= value; }
+        }
 
-        public event NavigationFailedEventHandler NavigationFailed;
+        event NavigationFailedEventHandler INavigationService.NavigationFailed
+        {
+            add { NavigationFailedInternal += value; }
+            remove { NavigationFailedInternal -= value; }
+        }
 
-        public event NavigationStoppedEventHandler NavigationStopped;
+        event NavigationStoppedEventHandler INavigationService.NavigationStopped
+        {
+            add { NavigationStoppedInternal += value; }
+            remove { NavigationStoppedInternal -= value; }
+        }
 
         Type INavigationService.SourcePageType
         {
@@ -97,12 +118,17 @@ namespace LogoFX.Client.Mvvm.Navigation
             GoBackInternal();
         }
 
-        public IList<INavigationStackEntry> BackStack
+        IList<INavigationStackEntry> INavigationService.BackStack
         {
             get { return _backStack; }
         }
 
-        public IList<INavigationStackEntry> ForwardStack
+        INavigationStackEntry INavigationService.CurrentEntry
+        {
+            get { return _currentEntry; }
+        }
+
+        IList<INavigationStackEntry> INavigationService.ForwardStack
         {
             get { return _forwardStack; }
         }

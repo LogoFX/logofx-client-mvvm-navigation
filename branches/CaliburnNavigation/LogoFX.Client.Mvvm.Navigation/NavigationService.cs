@@ -22,6 +22,11 @@ namespace LogoFX.Client.Mvvm.Navigation
             /// </summary>
             public Type Type { get; private set; }
 
+            public object Content
+            {
+                get { return Object.Target; }
+            }
+
             /// <summary>
             /// Gets the navigation parameter.
             /// </summary>
@@ -49,10 +54,9 @@ namespace LogoFX.Client.Mvvm.Navigation
 
         #region Fields
 
-        private int _stopTrack;
         private int _stopEvents;
 
-        private INavigationStackEntry _currentItem;
+        private INavigationStackEntry _currentEntry;
 
         private readonly List<INavigationStackEntry> _backStack =
             new List<INavigationStackEntry>();
@@ -144,15 +148,17 @@ namespace LogoFX.Client.Mvvm.Navigation
                     return null;
                 }
 
-                if (!noCheckHistory && _currentItem != null)
+                if (!noCheckHistory && _currentEntry != null)
                 {
                     //if current is same v-m
-                    var obj = ((HistoryItem) _currentItem).Object.Target;
-                    if (_currentItem.Type == itemType &&
-                        _currentItem.Parameter == parameter &&
+                    var obj = ((HistoryItem) _currentEntry).Object.Target;
+                    if (_currentEntry.Type == itemType &&
+                        _currentEntry.Parameter == parameter &&
                         obj != null)
                     {
                         _currentSourcePageType = itemType;
+                        UpdateProperties();
+
                         navEventArgs.Content = obj;
                         OnNavigated(navEventArgs);
                         return obj;
@@ -192,24 +198,24 @@ namespace LogoFX.Client.Mvvm.Navigation
             {
                 case NavigationMode.New:
                     _forwardStack.Clear();
-                    if (_currentItem != null)
+                    if (_currentEntry != null)
                     {
-                        _backStack.Add(_currentItem);
+                        _backStack.Add(_currentEntry);
                     }
-                    _currentItem = new HistoryItem(itemType, parameter)
+                    _currentEntry = new HistoryItem(itemType, parameter)
                     {
                         Object = new WeakReference(viewModel)
                     };
                     break;
                 case NavigationMode.Back:
-                    _forwardStack.Add(_currentItem);
-                    _currentItem = _backStack.Last();
-                    _backStack.Remove(_currentItem);
+                    _forwardStack.Add(_currentEntry);
+                    _currentEntry = _backStack.Last();
+                    _backStack.Remove(_currentEntry);
                     break;
                 case NavigationMode.Forward:
-                    _backStack.Add(_currentItem);
-                    _currentItem = _forwardStack.First();
-                    _forwardStack.Remove(_currentItem);
+                    _backStack.Add(_currentEntry);
+                    _currentEntry = _forwardStack.First();
+                    _forwardStack.Remove(_currentEntry);
                     break;
                 case NavigationMode.Refresh:
                     break;
@@ -217,9 +223,10 @@ namespace LogoFX.Client.Mvvm.Navigation
                     throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
             }
 
+            _currentSourcePageType = itemType;
+
             UpdateProperties();
 
-            _currentSourcePageType = itemType;
             navEventArgs.Content = viewModel;
             OnNavigated(navEventArgs);
             return viewModel;
@@ -279,11 +286,14 @@ namespace LogoFX.Client.Mvvm.Navigation
             NotifyOfPropertyChange(() => ((INavigationService) this).CanGoForward);
             NotifyOfPropertyChange(() => ((INavigationService) this).SourcePageType);
             NotifyOfPropertyChange(() => ((INavigationService) this).CurrentSourcePageType);
+            NotifyOfPropertyChange(() => ((INavigationService) this).BackStack);
+            NotifyOfPropertyChange(() => ((INavigationService) this).CurrentEntry);
+            NotifyOfPropertyChange(() => ((INavigationService) this).ForwardStack);
         }
 
         private void OnNavigating(NavigatingCancelEventArgs e)
         {
-            var handler = Navigating;
+            var handler = NavigatingInternal;
 
             if (handler == null)
             {
@@ -295,7 +305,7 @@ namespace LogoFX.Client.Mvvm.Navigation
 
         private void OnNavigated(NavigationEventArgs e)
         {
-            var handler = Navigated;
+            var handler = NavigatedInternal;
             if (handler == null)
             {
                 return;
@@ -306,7 +316,7 @@ namespace LogoFX.Client.Mvvm.Navigation
 
         private void OnNavigationStopped(NavigationEventArgs e)
         {
-            var handler = NavigationStopped;
+            var handler = NavigationStoppedInternal;
             if (handler == null)
             {
                 return;
@@ -317,7 +327,7 @@ namespace LogoFX.Client.Mvvm.Navigation
 
         private void OnNavigationFailed(NavigationFailedEventArgs e)
         {
-            var handler = NavigationFailed;
+            var handler = NavigationFailedInternal;
             if (handler == null)
             {
                 return;

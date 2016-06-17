@@ -6,5 +6,6 @@ namespace LogoFX.Client.Mvvm.Navigation
     {
         object Parameter { get; }
         Type Type { get; }
+        object Content { get; }
     }
 }

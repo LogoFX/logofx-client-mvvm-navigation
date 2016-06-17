@@ -78,7 +78,6 @@
     <Compile Include="NavigationService.RootableNavigationBuilderOfT.cs">
       <DependentUpon>NavigationService.cs</DependentUpon>
     </Compile>
-    <Compile Include="NavigationStackEntry.cs" />
     <Compile Include="NavigationStoppedEventHandler.cs" />
     <Compile Include="NavigationSynonymAttribute.cs" />
     <Compile Include="NavigationViewModelAttribute.cs" />

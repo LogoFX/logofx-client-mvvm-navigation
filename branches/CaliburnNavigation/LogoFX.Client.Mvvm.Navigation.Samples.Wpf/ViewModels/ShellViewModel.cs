@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Input;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 using LogoFX.Client.Mvvm.Commanding;
@@ -13,6 +15,11 @@ namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
         public ShellViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
+            _navigationService.Navigated += (s, e) =>
+            {
+                NotifyOfPropertyChange(() => NavigationBackStack);
+                NotifyOfPropertyChange(() => NavigationCurrentEntry);
+            };
         }
 
         private ICommand _navigateBackCommand;
@@ -46,6 +53,23 @@ namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
                                _navigationService.GoForward();
                            })
                            .RequeryOnPropertyChanged(_navigationService, () => _navigationService.CanGoForward));
+            }
+        }
+
+        public IEnumerable<IScreen> NavigationBackStack
+        {
+            get { return _navigationService.BackStack.Select(x => x.Content).OfType<IScreen>(); }
+        }
+
+        public IScreen NavigationCurrentEntry
+        {
+            get
+            {
+                if (_navigationService.CurrentEntry == null)
+                {
+                    return null;
+                }
+                return _navigationService.CurrentEntry.Content as IScreen;
             }
         }
 
