@@ -7,8 +7,8 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:actions="clr-namespace:LogoFX.Client.Mvvm.View.Interactivity.Actions;assembly=LogoFX.Client.Mvvm.View.Platform"
         xmlns:controls="clr-namespace:LogoFX.Client.Mvvm.Navigation.Samples.Wpf.Controls"
-        xmlns:navigation="clr-namespace:LogoFX.Client.Mvvm.Navigation;assembly=LogoFX.Client.Mvvm.Navigation"
         xmlns:micro="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+        xmlns:navigation="clr-namespace:LogoFX.Client.Mvvm.Navigation;assembly=LogoFX.Client.Mvvm.Navigation"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:ShellViewModel}"
         WindowState="Maximized"
@@ -55,13 +55,14 @@
             </Button>
 
             <controls:NavigationBreadcrumbs Grid.Column="2"
+                                            Margin="5"
                                             ItemsSource="{Binding Path=NavigationBackStack, Mode=OneWay}"
                                             CurrentValue="{Binding Path=NavigationCurrentEntry, Mode=OneWay}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type micro:IScreen}">
-                        <TextBlock Text="{Binding Path=DisplayName, Mode=OneWay}" />
+                <controls:NavigationBreadcrumbs.ItemTemplate>
+                    <DataTemplate DataType="{x:Type navigation:INavigationStackEntry}">
+                        <TextBlock Text="{Binding Path=Content.DisplayName, Mode=OneWay}" />
                     </DataTemplate>
-                </ItemsControl.ItemTemplate>
+                </controls:NavigationBreadcrumbs.ItemTemplate>
             </controls:NavigationBreadcrumbs>
         </Grid>
         

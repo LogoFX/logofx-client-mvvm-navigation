@@ -35,6 +35,12 @@ namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
             }
         }
 
+        public override string DisplayName
+        {
+            get { return "Main"; }
+            set { }
+        }
+
         public void NavigateTo(object viewModel, object argument)
         {
             ActivateItem((IScreen)viewModel);

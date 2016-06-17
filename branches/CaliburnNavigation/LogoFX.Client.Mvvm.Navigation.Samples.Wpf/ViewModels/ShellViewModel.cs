@@ -56,21 +56,14 @@ namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
             }
         }
 
-        public IEnumerable<IScreen> NavigationBackStack
+        public IEnumerable<INavigationStackEntry> NavigationBackStack
         {
-            get { return _navigationService.BackStack.Select(x => x.Content).OfType<IScreen>(); }
+            get { return _navigationService.BackStack.OfType<INavigationStackEntry>(); }
         }
 
-        public IScreen NavigationCurrentEntry
+        public INavigationStackEntry NavigationCurrentEntry
         {
-            get
-            {
-                if (_navigationService.CurrentEntry == null)
-                {
-                    return null;
-                }
-                return _navigationService.CurrentEntry.Content as IScreen;
-            }
+            get { return _navigationService.CurrentEntry; }
         }
 
         public override string DisplayName

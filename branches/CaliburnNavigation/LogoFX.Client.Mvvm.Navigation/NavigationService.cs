@@ -22,10 +22,13 @@ namespace LogoFX.Client.Mvvm.Navigation
             /// </summary>
             public Type Type { get; private set; }
 
-            public object Content
-            {
-                get { return Object.Target; }
-            }
+            /// <summary>
+            /// Gets or sets the navigation target.
+            /// </summary>
+            /// <value>
+            /// The navigation target.
+            /// </value>
+            public object Content { get; set; }
 
             /// <summary>
             /// Gets the navigation parameter.
@@ -34,14 +37,6 @@ namespace LogoFX.Client.Mvvm.Navigation
             /// The navigation parameter.
             /// </value>
             public object Parameter { get; private set; }
-
-            /// <summary>
-            /// Gets or sets the navigation target.
-            /// </summary>
-            /// <value>
-            /// The navigation target.
-            /// </value>
-            public WeakReference Object { get; set; }
 
             public HistoryItem(Type type, object parameter)
             {
@@ -151,7 +146,7 @@ namespace LogoFX.Client.Mvvm.Navigation
                 if (!noCheckHistory && _currentEntry != null)
                 {
                     //if current is same v-m
-                    var obj = ((HistoryItem) _currentEntry).Object.Target;
+                    var obj = _currentEntry.Content;
                     if (_currentEntry.Type == itemType &&
                         _currentEntry.Parameter == parameter &&
                         obj != null)
@@ -204,7 +199,7 @@ namespace LogoFX.Client.Mvvm.Navigation
                     }
                     _currentEntry = new HistoryItem(itemType, parameter)
                     {
-                        Object = new WeakReference(viewModel)
+                        Content = viewModel
                     };
                     break;
                 case NavigationMode.Back:
