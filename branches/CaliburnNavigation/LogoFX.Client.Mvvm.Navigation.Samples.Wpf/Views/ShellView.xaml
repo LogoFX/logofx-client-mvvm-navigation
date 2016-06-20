@@ -7,7 +7,6 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:actions="clr-namespace:LogoFX.Client.Mvvm.View.Interactivity.Actions;assembly=LogoFX.Client.Mvvm.View.Platform"
         xmlns:controls="clr-namespace:LogoFX.Client.Mvvm.Navigation.Samples.Wpf.Controls"
-        xmlns:micro="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
         xmlns:navigation="clr-namespace:LogoFX.Client.Mvvm.Navigation;assembly=LogoFX.Client.Mvvm.Navigation"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:ShellViewModel}"
@@ -63,6 +62,13 @@
                         <TextBlock Text="{Binding Path=Content.DisplayName, Mode=OneWay}" />
                     </DataTemplate>
                 </controls:NavigationBreadcrumbs.ItemTemplate>
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="NavigationClick">
+                        <actions:ExecuteCommandAction Command="{Binding Path=NavigateStackEntryCommand, Mode=OneTime}"
+                                                      UseTriggerParameter="True" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </controls:NavigationBreadcrumbs>
         </Grid>
         

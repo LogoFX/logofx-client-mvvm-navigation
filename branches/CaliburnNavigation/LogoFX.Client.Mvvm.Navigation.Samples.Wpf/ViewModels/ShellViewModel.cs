@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 using LogoFX.Client.Mvvm.Commanding;
+using LogoFX.Client.Mvvm.Navigation.Samples.Wpf.Controls;
 
 namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
 {
@@ -53,6 +54,21 @@ namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels
                                _navigationService.GoForward();
                            })
                            .RequeryOnPropertyChanged(_navigationService, () => _navigationService.CanGoForward));
+            }
+        }
+
+        private ICommand _navigateStackEntryCommand;
+
+        public ICommand NavigateStackEntryCommand
+        {
+            get
+            {
+                return _navigateStackEntryCommand ??
+                       (_navigateStackEntryCommand = ActionCommand<NavigationClickEventArgs>
+                           .Do(e =>
+                           {
+                               _navigationService.Navigate((INavigationStackEntry) e.NavigationItem);
+                           }));
             }
         }
 

@@ -108,6 +108,18 @@ namespace LogoFX.Client.Mvvm.Navigation
             return NavigateInternal(NavigationMode.New, sourcePageType, parameter) != null;
         }
 
+        bool INavigationService.Navigate(INavigationStackEntry stackEntry)
+        {
+            var index = _backStack.IndexOf(stackEntry);
+            if (index >= 0)
+            {
+                _currentEntry = null;
+                _backStack.RemoveRange(index, _backStack.Count - index);
+            }
+
+            return NavigateInternal(NavigationMode.New, stackEntry.Type, stackEntry.Parameter) != null;
+        }
+
         void INavigationService.GoForward()
         {
             GoForwardInternal();

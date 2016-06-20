@@ -103,6 +103,13 @@ namespace LogoFX.Client.Mvvm.Navigation
         bool Navigate(Type sourcePageType, object parameter);
 
         /// <summary>
+        /// Navigates the specified stack entry.
+        /// </summary>
+        /// <param name="stackEntry">The stack entry.</param>
+        /// <returns>Whether or not navigation succeeded.</returns>
+        bool Navigate(INavigationStackEntry stackEntry);
+
+        /// <summary>
         ///   Navigates forward.
         /// </summary>
         void GoForward();
