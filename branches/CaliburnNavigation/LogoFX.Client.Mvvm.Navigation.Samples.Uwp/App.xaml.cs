@@ -12,6 +12,7 @@
         public App()
         {
             InitializeComponent();
+            Initialize();
         }
     }
 }

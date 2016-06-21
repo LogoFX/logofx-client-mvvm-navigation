@@ -3,10 +3,9 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 using LogoFX.Client.Mvvm.Commanding;
-using LogoFX.Client.Mvvm.Navigation.Samples.Uwp.ViewModels;
 using LogoFX.Client.Mvvm.ViewModel.Services;
 
-namespace LogoFX.Client.Mvvm.Navigation.Samples.Uwp.Controls
+namespace LogoFX.Client.Mvvm.Navigation.Samples.Uwp.ViewModels
 {
     [UsedImplicitly]
     [NavigationViewModel(ConductorType = typeof(ShellViewModel))]
@@ -28,10 +27,12 @@ namespace LogoFX.Client.Mvvm.Navigation.Samples.Uwp.Controls
             get
             {
                 return _navigateCommand ??
-                       (_navigateCommand = ActionCommand<Type>
+                       (_navigateCommand = ActionCommand<string>
                            .Do(t =>
                            {
-                               _navigationService.Navigate(t);
+                               t = string.Format("{0}.{1}", GetType().Namespace, t);
+                               var type = Type.GetType(t);
+                               _navigationService.Navigate(type);
                            }));
             }
         }
