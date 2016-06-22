@@ -8,7 +8,7 @@
              d:DataContext="{d:DesignInstance viewModels:Page2ViewModel}"
              d:DesignHeight="300" 
              d:DesignWidth="300">
-    <Grid Background="LightGray">
+    <Grid Background="Green">
             
     </Grid>
 </UserControl>

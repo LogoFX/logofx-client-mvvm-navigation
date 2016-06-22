@@ -48,6 +48,8 @@
         </Grid>
 
         <ContentControl Grid.Row="1"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
                         x:Name="ActiveItem" 
                         Margin="5" />
     </Grid>
