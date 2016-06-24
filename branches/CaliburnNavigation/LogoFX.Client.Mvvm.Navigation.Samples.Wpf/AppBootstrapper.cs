@@ -1,5 +1,4 @@
-﻿using LogoFX.Bootstrapping;
-using LogoFX.Client.Bootstrapping;
+﻿using LogoFX.Client.Bootstrapping;
 using LogoFX.Client.Bootstrapping.Adapters.SimpleContainer;
 using LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels;
 using LogoFX.Client.Mvvm.ViewModel.Services;
