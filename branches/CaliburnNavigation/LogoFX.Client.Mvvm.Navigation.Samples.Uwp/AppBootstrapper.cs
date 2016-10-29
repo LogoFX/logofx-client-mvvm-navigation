@@ -15,7 +15,7 @@ namespace LogoFX.Client.Mvvm.Navigation.Samples.Uwp
             : base(s_iocContainer)
         {
             this.UseResolver(s_iocContainer);
-            this.UseViewModelCreatorService();
+            //this.UseViewModelCreatorService();
             this.UseNavigation<ShellViewModel, ExtendedSimpleContainerAdapter>(s_iocContainer);
         }
     }

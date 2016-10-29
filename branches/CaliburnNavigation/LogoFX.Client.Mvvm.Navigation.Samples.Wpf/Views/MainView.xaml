@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:actions="clr-namespace:LogoFX.Client.Mvvm.View.Interactivity.Actions;assembly=LogoFX.Client.Mvvm.View.Platform"
+             xmlns:commanding="clr-namespace:LogoFX.Client.Mvvm.Commanding;assembly=LogoFX.Client.Mvvm.Commanding.Platform"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
              d:DesignHeight="300"
@@ -33,8 +33,8 @@
                     Content="Page 1">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
-                        <actions:ExecuteCommandAction Command="{Binding Path=NavigateCommand, Mode=OneTime}"
-                                                      Parameter="{x:Type viewModels:Page1ViewModel}"/>
+                        <commanding:ExecuteCommandAction Command="{Binding Path=NavigateCommand, Mode=OneTime}"
+                                                         Parameter="{x:Type viewModels:Page1ViewModel}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
@@ -46,7 +46,7 @@
                     Content="Page 2">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
-                        <actions:ExecuteCommandAction Command="{Binding Path=NavigateCommand, Mode=OneTime}"
+                        <commanding:ExecuteCommandAction Command="{Binding Path=NavigateCommand, Mode=OneTime}"
                                                       Parameter="{x:Type viewModels:Page2ViewModel}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
@@ -59,7 +59,7 @@
                     Content="Page 3">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
-                        <actions:ExecuteCommandAction Command="{Binding Path=NavigateCommand, Mode=OneTime}"
+                        <commanding:ExecuteCommandAction Command="{Binding Path=NavigateCommand, Mode=OneTime}"
                                                       Parameter="{x:Type viewModels:Page3ViewModel}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
@@ -72,7 +72,7 @@
                     Content="Page 4">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
-                        <actions:ExecuteCommandAction Command="{Binding Path=NavigateCommand, Mode=OneTime}"
+                        <commanding:ExecuteCommandAction Command="{Binding Path=NavigateCommand, Mode=OneTime}"
                                                       Parameter="{x:Type viewModels:Page4ViewModel}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
