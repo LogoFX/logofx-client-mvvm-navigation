@@ -14,9 +14,9 @@ namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf
         public AppBootstrapper()
             : base(s_containerAdapter)
         {
-            this.UseResolver();
-            this.UseViewModelCreatorService();
-            this.UseNavigation<ShellViewModel, ExtendedSimpleContainerAdapter>(s_containerAdapter);
+            this.UseResolver()
+                .UseViewModelCreatorService()
+                .UseNavigation<ShellViewModel, ExtendedSimpleContainerAdapter>(s_containerAdapter);
         }
     }
 }
