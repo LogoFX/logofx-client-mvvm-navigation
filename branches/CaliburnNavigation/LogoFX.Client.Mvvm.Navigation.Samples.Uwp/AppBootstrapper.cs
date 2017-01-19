@@ -2,7 +2,6 @@
 using LogoFX.Client.Bootstrapping;
 using LogoFX.Client.Bootstrapping.Adapters.SimpleContainer;
 using LogoFX.Client.Mvvm.Navigation.Samples.Uwp.ViewModels;
-using LogoFX.Client.Mvvm.ViewModel.Services;
 
 namespace LogoFX.Client.Mvvm.Navigation.Samples.Uwp
 {

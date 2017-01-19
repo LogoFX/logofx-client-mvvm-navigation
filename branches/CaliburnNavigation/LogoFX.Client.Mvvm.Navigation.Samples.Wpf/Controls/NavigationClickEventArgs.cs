@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 
 namespace LogoFX.Client.Mvvm.Navigation.Samples.Wpf.Controls
 {
