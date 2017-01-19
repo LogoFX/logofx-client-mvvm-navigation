@@ -145,14 +145,14 @@ namespace LogoFX.Client.Mvvm.Navigation
             get { return _forwardStack; }
         }
 
-        bool INavigationService.SuspendState()
-        {
-            throw new NotImplementedException();
-        }
+        //bool INavigationService.SuspendState()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        bool INavigationService.ResumeState()
-        {
-            throw new NotImplementedException();
-        }
+        //bool INavigationService.ResumeState()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

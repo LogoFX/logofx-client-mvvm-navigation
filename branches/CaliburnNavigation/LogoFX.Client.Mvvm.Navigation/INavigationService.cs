@@ -120,14 +120,14 @@ namespace LogoFX.Client.Mvvm.Navigation
         void GoBack();
 
         /// <summary>
-        /// Gets a collection of PageStackEntry instances representing the backward navigation history of the Frame.
+        /// Gets a collection of PageStackEntry instances representing the backward navigation history.
         /// </summary>
         IList<INavigationStackEntry> BackStack { get; }
 
         INavigationStackEntry CurrentEntry { get; }
 
         /// <summary>
-        /// Gets a collection of PageStackEntry instances representing the forward navigation history of the Frame.
+        /// Gets a collection of PageStackEntry instances representing the forward navigation history.
         /// </summary>
         IList<INavigationStackEntry> ForwardStack { get; }
 
@@ -135,12 +135,12 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// Stores the frame navigation state in local settings if it can.
         /// </summary>
         /// <returns>Whether the suspension was sucessful</returns>
-        bool SuspendState();
+        //bool SuspendState();
 
         /// <summary>
         /// Tries to restore the frame navigation state from local settings.
         /// </summary>
         /// <returns>Whether the restoration of successful.</returns>
-        bool ResumeState();
+        //bool ResumeState();
     }
 }
