@@ -1,5 +1,4 @@
-﻿using Caliburn.Micro;
-using LogoFX.Client.Modularity;
+﻿using LogoFX.Client.Modularity;
 
 namespace LogoFX.Client.Mvvm.Navigation
 {
@@ -21,7 +20,7 @@ namespace LogoFX.Client.Mvvm.Navigation
     /// The root view model of the module which can serve
     /// as navigation target.
     /// </summary>
-    public interface INavigationRootViewModel : IRootViewModel, IScreen
+    public interface INavigationRootViewModel : IRootViewModel
     {
         
     }
