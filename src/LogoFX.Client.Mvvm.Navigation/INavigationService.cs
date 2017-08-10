@@ -32,6 +32,14 @@ namespace LogoFX.Client.Mvvm.Navigation
         IRootableNavigationBuilder<T> RegisterViewModel<T>(Func<T> createFunc);
 
         /// <summary>
+        /// Registers the attribute.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="attribute">The attribute.</param>
+        /// <param name="resolver">The IoC container resolver.</param>
+        void RegisterAttribute(Type type, NavigationViewModelAttribute attribute, IIocContainerResolver resolver);
+
+        /// <summary>
         /// Creates navigation parameter using navigation target and specified argument.
         /// </summary>
         /// <param name="argument"></param>

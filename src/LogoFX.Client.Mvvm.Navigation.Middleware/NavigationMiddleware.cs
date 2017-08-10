@@ -23,13 +23,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         public NavigationMiddleware(IIocContainerResolver resolver)
         {
             _resolver = resolver;
-        }
-
-        private NavigationService _navigationService = new NavigationService();
-        private INavigationService NavigationService
-        {
-            get { return _navigationService ?? (_navigationService = new NavigationService()); }
-        }
+        }       
 
         /// <summary>
         /// Override this method to inject custom logic during root view model registration.
@@ -49,7 +43,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// <param name="assemblies">The list of assemblies to be inspected.</param>
         protected virtual void OnPrepareNavigation(INavigationService navigationService, IIocContainerResolver resolver, IEnumerable<Assembly> assemblies)
         {
-            RegisterNavigationViewModels(resolver, assemblies);
+            RegisterNavigationViewModels(navigationService, resolver, assemblies);
         }
 
         /// <summary>
@@ -58,14 +52,15 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// <param name="object">The object.</param>
         /// <returns></returns>
         public IBootstrapperWithContainerAdapter<TIocContainerAdapter> Apply(IBootstrapperWithContainerAdapter<TIocContainerAdapter> @object)
-        {            
-            @object.Registrator.RegisterInstance(NavigationService);
-            OnRegisterRoot(NavigationService, _resolver);
-            OnPrepareNavigation(NavigationService, _resolver, @object.Assemblies);
+        {
+            @object.Registrator.RegisterSingleton<INavigationService, NavigationService>();
+            var navigationService = _resolver.Resolve<INavigationService>();
+            OnRegisterRoot(navigationService, _resolver);
+            OnPrepareNavigation(navigationService, _resolver, @object.Assemblies);
             return @object;
         }
 
-        private void RegisterNavigationViewModels(IIocContainerResolver resolver, IEnumerable<Assembly> assemblies)
+        private void RegisterNavigationViewModels(INavigationService navigationService, IIocContainerResolver resolver, IEnumerable<Assembly> assemblies)
         {
             var viewModelTypes = assemblies.ToArray()
                 .SelectMany(assembly => assembly.DefinedTypes)
@@ -79,7 +74,7 @@ namespace LogoFX.Client.Mvvm.Navigation
 
             foreach (var viewModelType in viewModelTypes)
             {
-                _navigationService.RegisterAttribute(viewModelType.Type, viewModelType.Attr, resolver);
+                navigationService.RegisterAttribute(viewModelType.Type, viewModelType.Attr, resolver);
             }
         }        
     }
