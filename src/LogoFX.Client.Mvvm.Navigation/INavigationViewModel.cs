@@ -8,8 +8,8 @@
         /// <summary>
         /// Called when the view model is navigated to or navigated from.
         /// </summary>
-        /// <param name="direction">The navigation direction.</param>
+        /// <param name="mode">The navigation mode.</param>
         /// <param name="argument">The navigation argument.</param>
-        void OnNavigated(NavigationDirection direction, object argument);
+        void OnNavigated(NavigationMode mode, object argument);
     }
 }

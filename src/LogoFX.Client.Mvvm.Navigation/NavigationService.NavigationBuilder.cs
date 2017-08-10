@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 
 namespace LogoFX.Client.Mvvm.Navigation
 {
-    partial class NavigationService
+    public sealed partial class NavigationService
     {
         private abstract class NavigationBuilder : INavigationBuilder
         {
@@ -44,8 +44,6 @@ namespace LogoFX.Client.Mvvm.Navigation
                     _conductorType = value;
                 }
             }
-
-            public bool NotRemember { get; protected set; }
 
             object INavigationBuilder.GetValue()
             {

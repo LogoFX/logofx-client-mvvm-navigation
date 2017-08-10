@@ -1,6 +1,6 @@
-﻿namespace LogoFX.Client.Mvvm.Navigation
+namespace LogoFX.Client.Mvvm.Navigation
 {
-    partial class NavigationService
+    public sealed partial class NavigationService
     {
         private abstract class RootableNavigationBuilder<T> : NavigationBuilder<T>, IRootableNavigationBuilder<T>
         {
@@ -10,6 +10,5 @@
                 IsSingleton = true;
             }
         }
-
     }
 }

@@ -1,13 +1,12 @@
-﻿namespace LogoFX.Client.Mvvm.Navigation
+namespace LogoFX.Client.Mvvm.Navigation
 {
-    partial class NavigationService
+    public sealed partial class NavigationService
     {
         private sealed class InstanceBuilder<T> : RootableNavigationBuilder<T>
         {
             private readonly T _instance;
 
             public InstanceBuilder(INavigationService service, T instance)
-                : base()
             {
                 _instance = instance;
             }

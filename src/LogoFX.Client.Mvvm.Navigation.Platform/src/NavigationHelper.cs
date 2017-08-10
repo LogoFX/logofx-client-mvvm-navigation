@@ -40,15 +40,15 @@ namespace LogoFX.Client.Mvvm.Navigation
         private static CommandBinding CreateBrowseBackCommandBinding(INavigationService navigationService)
         {
             return new CommandBinding(NavigationCommands.BrowseBack,
-                (sender, args) => navigationService.Back(),
-                (sender, args) => args.CanExecute = navigationService.CanNavigateBack);
+                (sender, args) => navigationService.GoBack(),
+                (sender, args) => args.CanExecute = navigationService.CanGoBack);
         }
 
         private static CommandBinding CreateBrowseForwardCommandBinding(INavigationService navigationService)
         {
             return new CommandBinding(NavigationCommands.BrowseForward,
-                (sender, args) => navigationService.Forward(),
-                (sender, args) => args.CanExecute = navigationService.CanNavigateForward);
+                (sender, args) => navigationService.GoForward(),
+                (sender, args) => args.CanExecute = navigationService.CanGoForward);
         }
     }
 }

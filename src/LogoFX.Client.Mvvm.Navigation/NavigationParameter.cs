@@ -1,4 +1,4 @@
-﻿namespace LogoFX.Client.Mvvm.Navigation
+namespace LogoFX.Client.Mvvm.Navigation
 {
     /// <summary>
     /// Navigation parameter. Implement to provide custom navigation behavior.

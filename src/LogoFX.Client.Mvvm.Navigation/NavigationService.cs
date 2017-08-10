@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using LogoFX.Client.Core;
 using Solid.Practices.IoC;
 
 namespace LogoFX.Client.Mvvm.Navigation
 {
-    /// <summary>
-    /// The navigation service.
-    /// </summary>    
-    /// <seealso cref="LogoFX.Client.Mvvm.Navigation.INavigationService" />
     public sealed partial class NavigationService : NotifyPropertyChangedBase<NavigationService>
     {
         #region Nested Types
@@ -20,7 +15,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// <summary>
         /// The History Item.
         /// </summary>
-        private sealed class HistoryItem
+        private sealed class HistoryItem : INavigationStackEntry
         {
             /// <summary>
             /// Type of the navigation target.
@@ -28,34 +23,25 @@ namespace LogoFX.Client.Mvvm.Navigation
             public Type Type { get; private set; }
 
             /// <summary>
-            /// Gets the navigation argument.
-            /// </summary>
-            /// <value>
-            /// The navigation argument.
-            /// </value>
-            public object Argument { get; private set; }
-
-            /// <summary>
             /// Gets or sets the navigation target.
             /// </summary>
             /// <value>
             /// The navigation target.
             /// </value>
-            public WeakReference Object { get; set; }
+            public object Content { get; set; }
 
             /// <summary>
-            /// Gets or sets a value indicating whether this <see cref="HistoryItem"/> should be skipped.
+            /// Gets the navigation parameter.
             /// </summary>
             /// <value>
-            ///   <c>true</c> if skipped; otherwise, <c>false</c>.
+            /// The navigation parameter.
             /// </value>
-            public bool Skip { get; private set; }
+            public object Parameter { get; private set; }
 
-            public HistoryItem(Type type, object argument, bool skip)
+            public HistoryItem(Type type, object parameter)
             {
                 Type = type;
-                Argument = argument;
-                Skip = skip;
+                Parameter = parameter;
             }
         }
 
@@ -63,56 +49,200 @@ namespace LogoFX.Client.Mvvm.Navigation
 
         #region Fields
 
-        private int _stopTrack;
         private int _stopEvents;
 
-        private int _currentIndex = -1;
+        private INavigationStackEntry _currentEntry;
 
-        private readonly List<HistoryItem> _history =
-            new List<HistoryItem>();
+        private readonly List<INavigationStackEntry> _backStack =
+            new List<INavigationStackEntry>();
 
-        private readonly Dictionary<Type, INavigationBuilder> _builders = 
+        private readonly List<INavigationStackEntry> _forwardStack =
+            new List<INavigationStackEntry>();
+
+        private readonly Dictionary<Type, INavigationBuilder> _builders =
             new Dictionary<Type, INavigationBuilder>();
 
         #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Registers the attribute.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="attribute">The attribute.</param>
-        /// <param name="container">The container.</param>
-        public void RegisterAttribute(Type type, NavigationViewModelAttribute attribute, IIocContainer container)
+        /// <param name="resolver">The IoC container resolver.</param>
+        public void RegisterAttribute(Type type, NavigationViewModelAttribute attribute, IIocContainerResolver resolver)
         {
-            var types = new List<Type> {type};
+            var types = new List<Type> { type };
             var synonymAttributes = type.GetTypeInfo().GetCustomAttributes<NavigationSynonymAttribute>(inherit: false);
             types.AddRange(synonymAttributes.Select(x => x.SynonymType));
 
             foreach (var t in types)
             {
-                var builder = new AttributeBuilder(type, attribute, container);
+                var builder = new AttributeBuilder(type, attribute, resolver);
                 _builders.Add(t, builder);
             }
         }
 
+        #endregion
+
         #region Private Members
 
-        private bool StopTrack
+        private NavigationParameter CreateParameter<T>(object argument)
         {
-            get { return _stopTrack > 0; }
-            set
+            return new NavigationParameter<T>(this, argument);
+        }
+
+        private INavigationConductor ActivateConductorAsync(Type conductorType)
+        {
+            var builder = GetBuilder(conductorType);
+
+            if (builder.IsRoot)
             {
-                if (value)
+                return (INavigationConductor)builder.GetValue();
+            }
+
+            INavigationConductor result;
+
+            StopEvents = true;
+
+            try
+            {
+                result = (INavigationConductor) NavigateInternal(NavigationMode.Refresh, conductorType, null, true);
+            }
+
+            finally
+            {
+                StopEvents = false;
+            }
+
+            return result;
+        }
+
+        private object NavigateInternal(NavigationMode mode, Type itemType, object parameter, bool noCheckHistory = false)
+        {
+            NavigationEventArgs navEventArgs = new NavigationEventArgs
+            {
+                NavigationMode = mode,
+                Parameter = parameter,
+                SourcePageType = itemType
+            };
+
+            if (mode != NavigationMode.Refresh)
+            {
+                var sourcePageType = _sourcePageType;
+                _sourcePageType = itemType;
+
+                var cancelEventArgs = new NavigatingCancelEventArgs(mode);
+                OnNavigating(cancelEventArgs);
+                if (cancelEventArgs.Cancel)
                 {
-                    ++_stopTrack;
-                }
-                else
-                {
-                    --_stopTrack;
+                    OnNavigationStopped(navEventArgs);
+                    _sourcePageType = sourcePageType;
+                    return null;
                 }
 
-                Debug.Assert(_stopTrack >= 0);
+                if (!noCheckHistory && _currentEntry != null)
+                {
+                    //if current is same v-m
+                    var obj = _currentEntry.Content;
+                    if (_currentEntry.Type == itemType &&
+                        _currentEntry.Parameter == parameter &&
+                        obj != null)
+                    {
+                        _currentSourcePageType = itemType;
+                        UpdateProperties();
+
+                        navEventArgs.Content = obj;
+                        OnNavigated(navEventArgs);
+                        return obj;
+                    }
+                }
             }
+
+            var builder = GetBuilder(itemType);
+            INavigationConductor conductor;
+            try
+            {
+                conductor = ActivateConductorAsync(builder.ConductorType);
+            }
+
+            catch (Exception err)
+            {
+                //Trace.TraceError("ActivateConductorAsync throws error: {0}", err);
+                var failedEventArgs = new NavigationFailedEventArgs(err);
+                OnNavigationFailed(failedEventArgs);
+                if (failedEventArgs.Handled)
+                {
+                    return null;
+                }
+                throw;
+            }
+
+            object viewModel = builder.GetValue();
+            conductor.NavigateTo(viewModel, parameter);
+
+            var navigationViewModel = viewModel as INavigationViewModel;
+            if (!StopEvents && navigationViewModel != null)
+            {
+                navigationViewModel.OnNavigated(NavigationMode.New, parameter);
+            }
+
+            switch (mode)
+            {
+                case NavigationMode.New:
+                    _forwardStack.Clear();
+                    if (_currentEntry != null)
+                    {
+                        _backStack.Add(_currentEntry);
+                    }
+                    _currentEntry = new HistoryItem(itemType, parameter)
+                    {
+                        Content = viewModel
+                    };
+                    break;
+                case NavigationMode.Back:
+                    _forwardStack.Add(_currentEntry);
+                    _currentEntry = _backStack.Last();
+                    _backStack.Remove(_currentEntry);
+                    break;
+                case NavigationMode.Forward:
+                    _backStack.Add(_currentEntry);
+                    _currentEntry = _forwardStack.First();
+                    _forwardStack.Remove(_currentEntry);
+                    break;
+                case NavigationMode.Refresh:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
+            }
+
+            _currentSourcePageType = itemType;
+
+            UpdateProperties();
+
+            navEventArgs.Content = viewModel;
+            OnNavigated(navEventArgs);
+            return viewModel;
+        }
+
+        /// <summary>
+        /// Navigates forward.
+        /// </summary>
+        private void GoForwardInternal()
+        {
+            var historyItem = _forwardStack.First();
+            NavigateInternal(NavigationMode.Forward, historyItem.Type, historyItem.Parameter, true);
+        }
+
+        /// <summary>
+        /// Navigates back.
+        /// </summary>
+        private void GoBackInternal()
+        {
+            var historyItem = _backStack.Last();
+            NavigateInternal(NavigationMode.Back, historyItem.Type, historyItem.Parameter, true);
         }
 
         private bool StopEvents
@@ -133,141 +263,72 @@ namespace LogoFX.Client.Mvvm.Navigation
             }
         }
 
-        private void UpdateProperties()
-        {
-            NotifyOfPropertyChange(() => CanNavigateBack);
-            NotifyOfPropertyChange(() => CanNavigateForward);
-            NotifyOfPropertyChange(() => Current);
-        }
-
         private INavigationBuilder GetBuilder(Type type)
         {
             INavigationBuilder navigationBuilder;
 
             if (!_builders.TryGetValue(type, out navigationBuilder))
-            {                
+            {
                 throw new UnregisteredTypeException($"Not registered type '{type}'.");
             }
 
             return navigationBuilder;
         }
 
-        private async Task<INavigationConductor> ActivateConductorAsync(Type conductorType)
+        private void UpdateProperties()
         {
-            var builder = GetBuilder(conductorType);
+            NotifyOfPropertyChange(() => ((INavigationService) this).CanGoBack);
+            NotifyOfPropertyChange(() => ((INavigationService) this).CanGoForward);
+            NotifyOfPropertyChange(() => ((INavigationService) this).SourcePageType);
+            NotifyOfPropertyChange(() => ((INavigationService) this).CurrentSourcePageType);
+            NotifyOfPropertyChange(() => ((INavigationService) this).BackStack);
+            NotifyOfPropertyChange(() => ((INavigationService) this).CurrentEntry);
+            NotifyOfPropertyChange(() => ((INavigationService) this).ForwardStack);
+        }
 
-            if (builder.IsRoot)
-            {
-                return (INavigationConductor) builder.GetValue();
-            }
-
-            INavigationConductor result;
-
-            StopTrack = true;
-            StopEvents = true;
-
-            try
-            {
-                result = (INavigationConductor) await NavigateInternal(conductorType, null, true);
-            }
-
-            finally
-            {
-                StopEvents = false;
-                StopTrack = false;
-            }
-
-            return result;
-        }        
-
-        private async Task<object> NavigateInternal(Type itemType, object argument, bool noCheckHistory = false)
+        private void OnNavigating(NavigatingCancelEventArgs e)
         {
-            if (_currentIndex >= 0 && _history.Count > 0 && !noCheckHistory)
-            {
-                //if current is same v-m
-                int index = _currentIndex;
-                while (index >= 0 && _history[index].Skip)
-                {
-                    --index;
-                }
-                HistoryItem historyItem = _history[index];
-                var obj = historyItem.Object.Target;
-                if (historyItem.Type == itemType && historyItem.Argument == argument && obj != null)
-                {
-                    if (index != _currentIndex)
-                    {
-                        var obj2 = obj as INavigationViewModel;
-                        if (!StopEvents && obj2 != null)
-                        {
-                            obj2.OnNavigated(NavigationDirection.None, argument);
-                        }
-                        _currentIndex = index;
-                        UpdateProperties();
-                    }
-                    return obj;
-                }
+            var handler = NavigatingInternal;
 
-                //work with current item
-                historyItem = _history[_currentIndex];
-                obj = historyItem.Object.Target;
-                var navigationModel = obj as IAsyncNavigationViewModel;
-                if (navigationModel != null)
-                {
-                    bool canNavigate;
-                    try
-                    {
-                        canNavigate = await navigationModel.BeforeNavigationOutAsync(NavigationDirection.None);
-                    }
-                    catch (Exception err)
-                    {
-                        //Trace.TraceError("BeforeNavigationOutAsync throws error: {0}", err);
-                        throw;
-                    }
-                    if (!canNavigate)
-                    {
-                        return obj;
-                    }
-                }
+            if (handler == null)
+            {
+                return;
             }
 
-            var builder = GetBuilder(itemType);            
-            INavigationConductor conductor;
-            try
-            {
-                conductor = await ActivateConductorAsync(builder.ConductorType);
-            }
-            catch (Exception err)
-            {
-                //Trace.TraceError("ActivateConductorAsync throws error: {0}", err);                
-                throw;
-            }
-            object viewModel = builder.GetValue();
-            conductor.NavigateTo(viewModel, argument);
+            handler(this, e);
+        }
 
-            var navigationViewModel = viewModel as INavigationViewModel;
-            if (!StopEvents && navigationViewModel != null)
+        private void OnNavigated(NavigationEventArgs e)
+        {
+            var handler = NavigatedInternal;
+            if (handler == null)
             {
-                navigationViewModel.OnNavigated(NavigationDirection.None, argument);
-            }
-            
-            if (!StopTrack)
-            {
-                ++_currentIndex;
-                Debug.Assert(_history.Count >= _currentIndex);
-                if (_history.Count != _currentIndex)
-                {
-                    _history.RemoveRange(_currentIndex, _history.Count - _currentIndex);
-                }
-
-                var historyItem = new HistoryItem(itemType, argument, builder.NotRemember)
-                {
-                    Object = new WeakReference(viewModel)
-                };
-                _history.Insert(_currentIndex, historyItem);
-                UpdateProperties();
+                return;
             }
 
-            return viewModel;
+            handler(this, e);
+        }
+
+        private void OnNavigationStopped(NavigationEventArgs e)
+        {
+            var handler = NavigationStoppedInternal;
+            if (handler == null)
+            {
+                return;
+            }
+
+            handler(this, e);
+        }
+
+        private void OnNavigationFailed(NavigationFailedEventArgs e)
+        {
+            var handler = NavigationFailedInternal;
+            if (handler == null)
+            {
+                return;
+            }
+
+            handler(this, e);
         }
 
         #endregion

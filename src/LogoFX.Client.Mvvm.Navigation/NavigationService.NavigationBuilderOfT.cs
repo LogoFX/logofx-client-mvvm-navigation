@@ -1,6 +1,6 @@
-﻿namespace LogoFX.Client.Mvvm.Navigation
+namespace LogoFX.Client.Mvvm.Navigation
 {
-    partial class NavigationService
+    public sealed partial class NavigationService
     {
         private abstract class NavigationBuilder<T> : NavigationBuilder, INavigationBuilder<T>
         {
@@ -13,7 +13,7 @@
             public INavigationBuilder<T> AssignConductor<TConductor>()
                 where TConductor : INavigationConductor
             {
-                ConductorType = typeof (TConductor);
+                ConductorType = typeof(TConductor);
                 return this;
             }
 

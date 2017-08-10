@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 
 namespace LogoFX.Client.Mvvm.Navigation
 {
-    partial class NavigationService
+    public partial class NavigationService
     {
         private sealed class ResolverBuilder<T> : RootableNavigationBuilder<T>
         {

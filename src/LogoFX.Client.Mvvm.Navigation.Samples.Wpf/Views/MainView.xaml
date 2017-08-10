@@ -1,0 +1,109 @@
+﻿<UserControl x:Class="LogoFX.Client.Mvvm.Navigation.Samples.Wpf.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:LogoFX.Client.Mvvm.Navigation.Samples.Wpf.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:commanding="clr-namespace:LogoFX.Client.Mvvm.Commanding;assembly=LogoFX.Client.Mvvm.Commanding.Platform"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
+             d:DesignHeight="300"
+             d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="4" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="0"
+                    Height="25"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Content="Page 1">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <commanding:ExecuteCommandAction Command="{Binding Path=NavigateCommand, Mode=OneTime}"
+                                                         Parameter="{x:Type viewModels:Page1ViewModel}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
+            <Button Grid.Row="1"
+                    Height="25"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Content="Page 2">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <commanding:ExecuteCommandAction Command="{Binding Path=NavigateCommand, Mode=OneTime}"
+                                                      Parameter="{x:Type viewModels:Page2ViewModel}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
+            <Button Grid.Row="2"
+                    Height="25"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Content="Page 3">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <commanding:ExecuteCommandAction Command="{Binding Path=NavigateCommand, Mode=OneTime}"
+                                                      Parameter="{x:Type viewModels:Page3ViewModel}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
+            <Button Grid.Row="3"
+                    Height="25"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Content="Page 4">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <commanding:ExecuteCommandAction Command="{Binding Path=NavigateCommand, Mode=OneTime}"
+                                                      Parameter="{x:Type viewModels:Page4ViewModel}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </Grid>
+        
+        <GridSplitter Grid.Column="1"
+                      ResizeDirection="Columns"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch" />
+        
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0"
+                       Margin="5"
+                       VerticalAlignment="Center"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Text="{Binding Path=ActiveItem.DisplayName, Mode=OneWay}" />
+            
+            <TextBlock Grid.Row="1"
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center"
+                       Text="Empty" />
+            
+            <ContentControl Grid.Row="1"
+                            x:Name="ActiveItem" />
+        </Grid>
+    </Grid>
+</UserControl>

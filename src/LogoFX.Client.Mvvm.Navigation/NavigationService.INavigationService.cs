@@ -1,13 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using Solid.Practices.IoC;
 
 namespace LogoFX.Client.Mvvm.Navigation
 {
-    partial class NavigationService : INavigationService
+    public sealed partial class NavigationService : INavigationService
     {
-        IRootableNavigationBuilder<T> INavigationService.RegisterViewModel<T>(IIocContainer container)
+        private Type _sourcePageType;
+        private Type _currentSourcePageType;
+
+        private event NavigatedEventHandler NavigatedInternal;
+        private event NavigatingCancelEventHandler NavigatingInternal;
+        private event NavigationFailedEventHandler NavigationFailedInternal;
+        private event NavigationStoppedEventHandler NavigationStoppedInternal;
+
+        IRootableNavigationBuilder<T> INavigationService.RegisterViewModel<T>(IIocContainerResolver resolver)
         {
-            var builder = new GenericBuilder<T>(container);
+            var builder = new GenericBuilder<T>(resolver);
             _builders.Add(typeof(T), builder);
             return builder;
         }
@@ -26,30 +35,7 @@ namespace LogoFX.Client.Mvvm.Navigation
             return builder;
         }
 
-        async void INavigationService.Navigate<T>(object argument = null)
-        {
-            await NavigateInternal(typeof(T), argument);
-        }
-
-        async void INavigationService.Navigate(Type itemType, object argument = null)
-        {
-            await NavigateInternal(itemType, argument);
-        }
-
-        //public async void NavigateNoTrack<T>(object argument = null)
-        //{
-        //    StopTrack = true;
-        //    try
-        //    {
-        //        await NavigateInternal(typeof(T), argument);
-        //    }
-        //    finally
-        //    {
-        //        StopTrack = false;
-        //    }
-        //}
-
-        NavigationParameter INavigationService.CreateParameter<T>(object argument/*, bool noTrack = false*/)
+        NavigationParameter INavigationService.CreateParameter<T>(object argument)
         {
             return CreateParameter<T>(argument);
         }
@@ -59,153 +45,114 @@ namespace LogoFX.Client.Mvvm.Navigation
             return CreateParameter<T>(null);
         }
 
-        private NavigationParameter CreateParameter<T>(object argument)
+        event NavigatedEventHandler INavigationService.Navigated
         {
-            return new NavigationParameter<T>(this/*, noTrack*/, argument);
+            add { NavigatedInternal += value; }
+            remove { NavigatedInternal -= value; }
         }
 
-        void INavigationService.ClearHistory(bool clearSingletons)
+        event NavigatingCancelEventHandler INavigationService.Navigating
         {
-            _currentIndex = -1;
-            _history.Clear();
-            if (clearSingletons)
-            {
-                foreach (var navigationBuilder in _builders.Values)
-                {
-                    var builder = (NavigationBuilder) navigationBuilder;
-                    if (builder.IsRoot == false)
-                    {
-                        builder.ClearSingleton();
-                    }
-                }
-            }
-            UpdateProperties();
+            add { NavigatingInternal += value; }
+            remove { NavigatingInternal -= value; }
         }
 
-        /// <summary>
-        /// Navigates back.
-        /// </summary>
-        public async void Back()
+        event NavigationFailedEventHandler INavigationService.NavigationFailed
         {
-            HistoryItem historyItem = _history[_currentIndex];
-            var navigationModel = historyItem.Object.Target as IAsyncNavigationViewModel;
-            if (navigationModel != null)
+            add { NavigationFailedInternal += value; }
+            remove { NavigationFailedInternal -= value; }
+        }
+
+        event NavigationStoppedEventHandler INavigationService.NavigationStopped
+        {
+            add { NavigationStoppedInternal += value; }
+            remove { NavigationStoppedInternal -= value; }
+        }
+
+        Type INavigationService.SourcePageType
+        {
+            get { return _sourcePageType; }
+            set
             {
-                bool canNavigate = await navigationModel.BeforeNavigationOutAsync(NavigationDirection.Backward);
-                if (!canNavigate)
+                if (_sourcePageType == value)
                 {
                     return;
                 }
-            }
 
-            do
-            {
-                --_currentIndex;
-                historyItem = _history[_currentIndex];
-            } while (historyItem.Skip);
-            UpdateProperties();
-
-            StopTrack = true;
-            try
-            {
-                await NavigateInternal(historyItem.Type, historyItem.Argument, true);
-            }
-
-            finally
-            {
-                StopTrack = false;
+                NavigateInternal(NavigationMode.New, value, null);
             }
         }
 
-        /// <summary>
-        /// Navigates forward.
-        /// </summary>
-        public async void Forward()
+        Type INavigationService.CurrentSourcePageType
         {
-            HistoryItem historyItem = _history[_currentIndex];
-            var navigationModel = historyItem.Object.Target as IAsyncNavigationViewModel;
-            if (navigationModel != null)
-            {
-                bool canNavigate = await navigationModel.BeforeNavigationOutAsync(NavigationDirection.Forward);
-                if (!canNavigate)
-                {
-                    return;
-                }
-            }
-
-            do
-            {
-                ++_currentIndex;
-                historyItem = _history[_currentIndex];
-            } while (historyItem.Skip);
-
-            UpdateProperties();
-            StopTrack = true;
-            try
-            {
-                await NavigateInternal(historyItem.Type, historyItem.Argument, true);
-            }
-            finally
-            {
-                StopTrack = false;
-            }
+            get { return _currentSourcePageType; }
         }
 
-        /// <summary>
-        /// Returns value indicating whether can navigate back.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if can navigate back; otherwise, <c>false</c>.
-        /// </value>
-        public bool CanNavigateBack
+        bool INavigationService.CanGoForward
         {
-            get
-            {
-                int index = _currentIndex - 1;
-                while (index > 0 && _history[index].Skip)
-                {
-                    --index;
-                }
-                return index >= 0;
-            }
+            get { return _forwardStack.Count > 0; }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether can navigate forward.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if can navigate forward; otherwise, <c>false</c>.
-        /// </value>
-        public bool CanNavigateForward
+        bool INavigationService.CanGoBack
         {
-            get
-            {
-                int index = _currentIndex + 1;
-                while (index < _history.Count && _history[index].Skip)
-                {
-                    ++index;
-                }
-                return index < _history.Count;
-            }
+            get { return _backStack.Count > 0; }
         }
 
-        /// <summary>
-        /// Gets the current item.
-        /// </summary>
-        /// <value>
-        /// The current item.
-        /// </value>
-        public object Current
+        bool INavigationService.Navigate(Type sourcePageType)
         {
-            get
-            {
-                if (_currentIndex >= _history.Count || _currentIndex < 0)
-                {
-                    return null;
-                }
-
-                return _history[_currentIndex].Object.Target;
-            }
+            return NavigateInternal(NavigationMode.New, sourcePageType, null) != null;
         }
+
+        bool INavigationService.Navigate(Type sourcePageType, object parameter)
+        {
+            return NavigateInternal(NavigationMode.New, sourcePageType, parameter) != null;
+        }
+
+        bool INavigationService.Navigate(INavigationStackEntry stackEntry)
+        {
+            var index = _backStack.IndexOf(stackEntry);
+            if (index >= 0)
+            {
+                _currentEntry = null;
+                _backStack.RemoveRange(index, _backStack.Count - index);
+            }
+
+            return NavigateInternal(NavigationMode.New, stackEntry.Type, stackEntry.Parameter) != null;
+        }
+
+        void INavigationService.GoForward()
+        {
+            GoForwardInternal();
+        }
+
+        void INavigationService.GoBack()
+        {
+            GoBackInternal();
+        }
+
+        IList<INavigationStackEntry> INavigationService.BackStack
+        {
+            get { return _backStack; }
+        }
+
+        INavigationStackEntry INavigationService.CurrentEntry
+        {
+            get { return _currentEntry; }
+        }
+
+        IList<INavigationStackEntry> INavigationService.ForwardStack
+        {
+            get { return _forwardStack; }
+        }
+
+        //bool INavigationService.SuspendState()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //bool INavigationService.ResumeState()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
