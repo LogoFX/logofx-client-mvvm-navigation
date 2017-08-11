@@ -264,19 +264,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LogoFX.Client.Mvvm.Navigation.Middleware\LogoFX.Client.Mvvm.Navigation.Middleware.csproj">
+    <ProjectReference Include="..\LogoFX.Client.Mvvm.Navigation.Middleware\portable\LogoFX.Client.Mvvm.Navigation.Middleware.csproj">
       <Project>{641e967c-3a8b-4c94-9ecc-83270bb30dbb}</Project>
       <Name>LogoFX.Client.Mvvm.Navigation.Middleware</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogoFX.Client.Mvvm.Navigation.Modularity\LogoFX.Client.Mvvm.Navigation.Modularity.csproj">
-      <Project>{7383f4b4-cf6b-4226-9f49-99d0330c5d17}</Project>
-      <Name>LogoFX.Client.Mvvm.Navigation.Modularity</Name>
     </ProjectReference>
     <ProjectReference Include="..\LogoFX.Client.Mvvm.Navigation.Platform\net45\LogoFX.Client.Mvvm.Navigation.Platform.NET45.csproj">
       <Project>{3fc68450-ab10-4991-a539-981d6867ec1d}</Project>
       <Name>LogoFX.Client.Mvvm.Navigation.Platform.NET45</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LogoFX.Client.Mvvm.Navigation\LogoFX.Client.Mvvm.Navigation.csproj">
+    <ProjectReference Include="..\LogoFX.Client.Mvvm.Navigation\portable\LogoFX.Client.Mvvm.Navigation.csproj">
       <Project>{6be25f7e-97ce-448f-bfbd-a3e4a1b22a81}</Project>
       <Name>LogoFX.Client.Mvvm.Navigation</Name>
     </ProjectReference>

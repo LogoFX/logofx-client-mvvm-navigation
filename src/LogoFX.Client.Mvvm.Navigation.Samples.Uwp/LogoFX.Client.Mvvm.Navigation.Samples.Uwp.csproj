@@ -152,13 +152,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LogoFX.Client.Mvvm.Navigation.Middleware\LogoFX.Client.Mvvm.Navigation.Middleware.csproj">
+    <ProjectReference Include="..\LogoFX.Client.Mvvm.Navigation.Middleware\portable\LogoFX.Client.Mvvm.Navigation.Middleware.csproj">
       <Project>{641e967c-3a8b-4c94-9ecc-83270bb30dbb}</Project>
       <Name>LogoFX.Client.Mvvm.Navigation.Middleware</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogoFX.Client.Mvvm.Navigation\LogoFX.Client.Mvvm.Navigation.csproj">
-      <Project>{6BE25F7E-97CE-448F-BFBD-A3E4A1B22A81}</Project>
-      <Name>LogoFX.Client.Mvvm.Navigation</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6BE25F7E-97CE-448F-BFBD-A3E4A1B22A81}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LogoFX.Client.Mvvm.Navigation</RootNamespace>
+    <AssemblyName>LogoFX.Client.Mvvm.Navigation</AssemblyName>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Bin\Debug\Client\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Bin\portable\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Bin\portable\Release\LogoFX.Client.Mvvm.Navigation.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\src\Exceptions.cs">
+      <Link>Exceptions.cs</Link>
+    </Compile>
+    <Compile Include="..\src\INavigationBuilder.cs">
+      <Link>INavigationBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\src\INavigationBuilderOfT.cs">
+      <Link>INavigationBuilderOfT.cs</Link>
+    </Compile>
+    <Compile Include="..\src\INavigationConductor.cs">
+      <Link>INavigationConductor.cs</Link>
+    </Compile>
+    <Compile Include="..\src\INavigationEventArgs.cs">
+      <Link>INavigationEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\src\INavigationService.cs">
+      <Link>INavigationService.cs</Link>
+    </Compile>
+    <Compile Include="..\src\INavigationStackEntry.cs">
+      <Link>INavigationStackEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\src\INavigationViewModel.cs">
+      <Link>INavigationViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\src\IRootableNavigationBuilderOfT.cs">
+      <Link>IRootableNavigationBuilderOfT.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigatedEventHandler.cs">
+      <Link>NavigatedEventHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigatingCancelEventArgs.cs">
+      <Link>NavigatingCancelEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigatingCancelEventHandler.cs">
+      <Link>NavigatingCancelEventHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationEventArgs.cs">
+      <Link>NavigationEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationFailedEventArgs.cs">
+      <Link>NavigationFailedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationFailedEventHandler.cs">
+      <Link>NavigationFailedEventHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationMode.cs">
+      <Link>NavigationMode.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationParameter.cs">
+      <Link>NavigationParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationService.AttributeBuilder.cs">
+      <Link>NavigationService.AttributeBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationService.cs">
+      <Link>NavigationService.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationService.GenericBuilderOfT.cs">
+      <Link>NavigationService.GenericBuilderOfT.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationService.INavigationService.cs">
+      <Link>NavigationService.INavigationService.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationService.InstanceBuilderOfT.cs">
+      <Link>NavigationService.InstanceBuilderOfT.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationService.NavigationBuilder.cs">
+      <Link>NavigationService.NavigationBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationService.NavigationBuilderOfT.cs">
+      <Link>NavigationService.NavigationBuilderOfT.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationService.NavigationParameterOfT.cs">
+      <Link>NavigationService.NavigationParameterOfT.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationService.ResolverBuilderOfT.cs">
+      <Link>NavigationService.ResolverBuilderOfT.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationService.RootableNavigationBuilderOfT.cs">
+      <Link>NavigationService.RootableNavigationBuilderOfT.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationStoppedEventHandler.cs">
+      <Link>NavigationStoppedEventHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationSynonymAttribute.cs">
+      <Link>NavigationSynonymAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\src\NavigationViewModelAttribute.cs">
+      <Link>NavigationViewModelAttribute.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="LogoFX.Client.Core, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\LogoFX.Client.Core.Core.1.1.0\lib\portable-net45+wpa8+win8+MonoAndroid+MonoTouch+uap10.0\LogoFX.Client.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Solid.Practices.IoC, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Solid.Practices.IoC.1.1.1\lib\portable-net45+wpa8+win8+MonoAndroid+MonoTouch+uap10.0\Solid.Practices.IoC.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

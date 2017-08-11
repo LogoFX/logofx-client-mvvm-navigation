@@ -61,13 +61,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\LogoFX.Client.Mvvm.Navigation\LogoFX.Client.Mvvm.Navigation.csproj">
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\LogoFX.Client.Mvvm.Navigation\portable\LogoFX.Client.Mvvm.Navigation.csproj">
       <Project>{6BE25F7E-97CE-448F-BFBD-A3E4A1B22A81}</Project>
       <Name>LogoFX.Client.Mvvm.Navigation</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
