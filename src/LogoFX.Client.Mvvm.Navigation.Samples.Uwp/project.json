@@ -1,11 +1,11 @@
 ﻿{
   "dependencies": {
-    "JetBrains.Annotations": "10.2.1",
-    "LogoFX.Bootstrapping": "1.6.0",
-    "LogoFX.Client.Bootstrapping": "1.6.6",
-    "LogoFX.Client.Bootstrapping.Adapters.SimpleContainer": "1.1.1",
-    "LogoFX.Client.Mvvm.Commanding": "1.0.6",
-    "LogoFX.Client.Mvvm.ViewModel.Services.Core": "1.1.4",
+    "JetBrains.Annotations": "11.0.0",
+    "LogoFX.Bootstrapping": "1.7.0",
+    "LogoFX.Client.Bootstrapping": "1.7.0",
+    "LogoFX.Client.Bootstrapping.Adapters.SimpleContainer": "1.2.0",
+    "LogoFX.Client.Mvvm.Commanding": "1.1.0",
+    "LogoFX.Client.Mvvm.ViewModel.Services.Core": "1.2.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2"
   },
   "frameworks": {
