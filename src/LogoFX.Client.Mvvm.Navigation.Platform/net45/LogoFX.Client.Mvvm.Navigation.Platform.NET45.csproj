@@ -32,9 +32,8 @@
     <DocumentationFile>..\..\bin\net45\Release\LogoFX.Client.Mvvm.Navigation.Platform.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LogoFX.Client.Core, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\LogoFX.Client.Core.Core.1.1.0\lib\portable-net45+wpa8+win8+MonoAndroid+MonoTouch+uap10.0\LogoFX.Client.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="LogoFX.Client.Core, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\LogoFX.Client.Core.Core.1.2.0\lib\net45\LogoFX.Client.Core.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -61,13 +60,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\LogoFX.Client.Mvvm.Navigation\LogoFX.Client.Mvvm.Navigation.csproj">
-      <Project>{6BE25F7E-97CE-448F-BFBD-A3E4A1B22A81}</Project>
-      <Name>LogoFX.Client.Mvvm.Navigation</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\..\LogoFX.Client.Mvvm.Navigation\net45\LogoFX.Client.Mvvm.Navigation.NET45.csproj">
+      <Project>{01ACE53A-74DE-4193-8974-BE96ACDA339E}</Project>
+      <Name>LogoFX.Client.Mvvm.Navigation.NET45</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

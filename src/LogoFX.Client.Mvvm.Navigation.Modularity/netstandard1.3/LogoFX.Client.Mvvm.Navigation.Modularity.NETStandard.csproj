@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <AssemblyName>LogoFX.Client.Mvvm.Navigation.Modularity</AssemblyName>
+    <RootNamespace>LogoFX.Client.Mvvm.Navigation.Modularity</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\Bin\netstandard1.3\Release</OutputPath>
+    <DocumentationFile>..\..\Bin\netstandard1.3\Release\netstandard1.3\LogoFX.Client.Mvvm.Navigation.Modularity.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\src\INavigationModule.cs" Link="INavigationModule.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LogoFX.Client.Modularity" Version="1.1.0" />
+    <PackageReference Include="Solid.Practices.IoC" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\LogoFX.Client.Mvvm.Navigation\netstandard1.3\LogoFX.Client.Mvvm.Navigation.NETStandard.csproj" />
+  </ItemGroup>
+
+</Project>

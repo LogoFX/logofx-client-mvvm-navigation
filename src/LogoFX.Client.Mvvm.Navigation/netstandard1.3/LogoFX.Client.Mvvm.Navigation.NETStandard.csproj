@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <PackageId>LogoFX.Client.Mvvm.Navigation</PackageId>
+    <Authors>LogoFX.Client.Mvvm.Navigation</Authors>
+    <Company>LogoFX.Client.Mvvm.Navigation</Company>
+    <Product>LogoFX.Client.Mvvm.Navigation</Product>
+    <AssemblyName>LogoFX.Client.Mvvm.Navigation</AssemblyName>
+    <RootNamespace>LogoFX.Client.Mvvm.Navigation</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\Bin\netstandard1.3\Release</OutputPath>
+    <DocumentationFile>..\..\Bin\netstandard1.3\Release\netstandard1.3\LogoFX.Client.Mvvm.Navigation.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\src\Exceptions.cs" Link="Exceptions.cs" />
+    <Compile Include="..\src\INavigationBuilder.cs" Link="INavigationBuilder.cs" />
+    <Compile Include="..\src\INavigationBuilderOfT.cs" Link="INavigationBuilderOfT.cs" />
+    <Compile Include="..\src\INavigationConductor.cs" Link="INavigationConductor.cs" />
+    <Compile Include="..\src\INavigationEventArgs.cs" Link="INavigationEventArgs.cs" />
+    <Compile Include="..\src\INavigationService.cs" Link="INavigationService.cs" />
+    <Compile Include="..\src\INavigationStackEntry.cs" Link="INavigationStackEntry.cs" />
+    <Compile Include="..\src\INavigationViewModel.cs" Link="INavigationViewModel.cs" />
+    <Compile Include="..\src\IRootableNavigationBuilderOfT.cs" Link="IRootableNavigationBuilderOfT.cs" />
+    <Compile Include="..\src\NavigatedEventHandler.cs" Link="NavigatedEventHandler.cs" />
+    <Compile Include="..\src\NavigatingCancelEventArgs.cs" Link="NavigatingCancelEventArgs.cs" />
+    <Compile Include="..\src\NavigatingCancelEventHandler.cs" Link="NavigatingCancelEventHandler.cs" />
+    <Compile Include="..\src\NavigationEventArgs.cs" Link="NavigationEventArgs.cs" />
+    <Compile Include="..\src\NavigationFailedEventArgs.cs" Link="NavigationFailedEventArgs.cs" />
+    <Compile Include="..\src\NavigationFailedEventHandler.cs" Link="NavigationFailedEventHandler.cs" />
+    <Compile Include="..\src\NavigationMode.cs" Link="NavigationMode.cs" />
+    <Compile Include="..\src\NavigationParameter.cs" Link="NavigationParameter.cs" />
+    <Compile Include="..\src\NavigationService.AttributeBuilder.cs" Link="NavigationService.AttributeBuilder.cs" />
+    <Compile Include="..\src\NavigationService.cs" Link="NavigationService.cs" />
+    <Compile Include="..\src\NavigationService.GenericBuilderOfT.cs" Link="NavigationService.GenericBuilderOfT.cs" />
+    <Compile Include="..\src\NavigationService.INavigationService.cs" Link="NavigationService.INavigationService.cs" />
+    <Compile Include="..\src\NavigationService.InstanceBuilderOfT.cs" Link="NavigationService.InstanceBuilderOfT.cs" />
+    <Compile Include="..\src\NavigationService.NavigationBuilder.cs" Link="NavigationService.NavigationBuilder.cs" />
+    <Compile Include="..\src\NavigationService.NavigationBuilderOfT.cs" Link="NavigationService.NavigationBuilderOfT.cs" />
+    <Compile Include="..\src\NavigationService.NavigationParameterOfT.cs" Link="NavigationService.NavigationParameterOfT.cs" />
+    <Compile Include="..\src\NavigationService.ResolverBuilderOfT.cs" Link="NavigationService.ResolverBuilderOfT.cs" />
+    <Compile Include="..\src\NavigationService.RootableNavigationBuilderOfT.cs" Link="NavigationService.RootableNavigationBuilderOfT.cs" />
+    <Compile Include="..\src\NavigationStoppedEventHandler.cs" Link="NavigationStoppedEventHandler.cs" />
+    <Compile Include="..\src\NavigationSynonymAttribute.cs" Link="NavigationSynonymAttribute.cs" />
+    <Compile Include="..\src\NavigationViewModelAttribute.cs" Link="NavigationViewModelAttribute.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LogoFX.Bootstrapping" Version="1.7.0" />
+    <PackageReference Include="LogoFX.Client.Bootstrapping.Adapters.Contracts" Version="1.1.0" />
+    <PackageReference Include="LogoFX.Client.Core.Core" Version="1.2.0" />
+    <PackageReference Include="Solid.Practices.IoC" Version="1.2.0" />
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>
