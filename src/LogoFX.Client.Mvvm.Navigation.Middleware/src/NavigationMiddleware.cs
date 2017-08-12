@@ -16,11 +16,11 @@ namespace LogoFX.Client.Mvvm.Navigation
     public class NavigationMiddleware<TRootObject, TIocContainerAdapter> : 
         IMiddleware<IBootstrapperWithContainerAdapter<TIocContainerAdapter>>        
         where TRootObject : class
-        where TIocContainerAdapter : class, IIocContainerAdapter, IIocContainer, IIocContainerResolver, IBootstrapperAdapter, new()
+        where TIocContainerAdapter : class, IIocContainerAdapter, IIocContainer, IDependencyResolver, IBootstrapperAdapter, new()
     {
-        private readonly IIocContainerResolver _resolver;
+        private readonly IDependencyResolver _resolver;
 
-        public NavigationMiddleware(IIocContainerResolver resolver)
+        public NavigationMiddleware(IDependencyResolver resolver)
         {
             _resolver = resolver;
         }       
@@ -30,7 +30,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// </summary>
         /// <param name="navigationService"></param>
         /// <param name="resolver"></param>
-        protected virtual void OnRegisterRoot(INavigationService navigationService, IIocContainerResolver resolver)
+        protected virtual void OnRegisterRoot(INavigationService navigationService, IDependencyResolver resolver)
         {
             navigationService.RegisterViewModel<TRootObject>(resolver).AsRoot();
         }
@@ -41,7 +41,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// <param name="navigationService">The navigation service.</param>
         /// <param name="resolver">The IoC container resolver.</param>
         /// <param name="assemblies">The list of assemblies to be inspected.</param>
-        protected virtual void OnPrepareNavigation(INavigationService navigationService, IIocContainerResolver resolver, IEnumerable<Assembly> assemblies)
+        protected virtual void OnPrepareNavigation(INavigationService navigationService, IDependencyResolver resolver, IEnumerable<Assembly> assemblies)
         {
             RegisterNavigationViewModels(navigationService, resolver, assemblies);
         }
@@ -60,7 +60,7 @@ namespace LogoFX.Client.Mvvm.Navigation
             return @object;
         }
 
-        private void RegisterNavigationViewModels(INavigationService navigationService, IIocContainerResolver resolver, IEnumerable<Assembly> assemblies)
+        private void RegisterNavigationViewModels(INavigationService navigationService, IDependencyResolver resolver, IEnumerable<Assembly> assemblies)
         {
             var viewModelTypes = assemblies.ToArray()
                 .SelectMany(assembly => assembly.DefinedTypes)

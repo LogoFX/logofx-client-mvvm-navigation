@@ -6,9 +6,9 @@ namespace LogoFX.Client.Mvvm.Navigation
     {
         private sealed class GenericBuilder<T> : RootableNavigationBuilder<T> where T : class
         {
-            private readonly IIocContainerResolver _resolver;
+            private readonly IDependencyResolver _resolver;
 
-            public GenericBuilder(IIocContainerResolver resolver)
+            public GenericBuilder(IDependencyResolver resolver)
             {
                 _resolver = resolver;
             }

@@ -19,7 +19,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         public static IBootstrapperWithContainerAdapter<TIocContainerAdapter> 
             UseNavigation<TRootObject, TIocContainerAdapter>(
             this IBootstrapperWithContainerAdapter<TIocContainerAdapter> bootstrapper,
-            IIocContainerResolver resolver) 
+            IDependencyResolver resolver) 
             where TRootObject : class 
             where TIocContainerAdapter : class, IIocContainer, IIocContainerAdapter, IBootstrapperAdapter, new()
         {

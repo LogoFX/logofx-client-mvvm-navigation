@@ -8,9 +8,9 @@ namespace LogoFX.Client.Mvvm.Navigation
         private sealed class AttributeBuilder : NavigationBuilder
         {
             private readonly Type _vmType;
-            private readonly IIocContainerResolver _resolver;
+            private readonly IDependencyResolver _resolver;
 
-            public AttributeBuilder(Type vmType, NavigationViewModelAttribute attr, IIocContainerResolver resolver)
+            public AttributeBuilder(Type vmType, NavigationViewModelAttribute attr, IDependencyResolver resolver)
             {
                 _vmType = vmType;
                 _resolver = resolver;

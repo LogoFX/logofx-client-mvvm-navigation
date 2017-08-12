@@ -13,7 +13,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// <typeparam name="T">Type of view model</typeparam>
         /// <param name="resolver">The IoC container resolver.</param>
         /// <returns></returns>
-        IRootableNavigationBuilder<T> RegisterViewModel<T>(IIocContainerResolver resolver) where T : class;
+        IRootableNavigationBuilder<T> RegisterViewModel<T>(IDependencyResolver resolver) where T : class;
 
         /// <summary>
         /// Registers the view model instance for navigation.
@@ -37,7 +37,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// <param name="type">The type.</param>
         /// <param name="attribute">The attribute.</param>
         /// <param name="resolver">The IoC container resolver.</param>
-        void RegisterAttribute(Type type, NavigationViewModelAttribute attribute, IIocContainerResolver resolver);
+        void RegisterAttribute(Type type, NavigationViewModelAttribute attribute, IDependencyResolver resolver);
 
         /// <summary>
         /// Creates navigation parameter using navigation target and specified argument.

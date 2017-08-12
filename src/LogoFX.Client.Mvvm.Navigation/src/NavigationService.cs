@@ -72,7 +72,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         /// <param name="type">The type.</param>
         /// <param name="attribute">The attribute.</param>
         /// <param name="resolver">The IoC container resolver.</param>
-        public void RegisterAttribute(Type type, NavigationViewModelAttribute attribute, IIocContainerResolver resolver)
+        public void RegisterAttribute(Type type, NavigationViewModelAttribute attribute, IDependencyResolver resolver)
         {
             var types = new List<Type> { type };
             var synonymAttributes = type.GetTypeInfo().GetCustomAttributes<NavigationSynonymAttribute>(inherit: false);

@@ -14,7 +14,7 @@ namespace LogoFX.Client.Mvvm.Navigation
         private event NavigationFailedEventHandler NavigationFailedInternal;
         private event NavigationStoppedEventHandler NavigationStoppedInternal;
 
-        IRootableNavigationBuilder<T> INavigationService.RegisterViewModel<T>(IIocContainerResolver resolver)
+        IRootableNavigationBuilder<T> INavigationService.RegisterViewModel<T>(IDependencyResolver resolver)
         {
             var builder = new GenericBuilder<T>(resolver);
             _builders.Add(typeof(T), builder);
