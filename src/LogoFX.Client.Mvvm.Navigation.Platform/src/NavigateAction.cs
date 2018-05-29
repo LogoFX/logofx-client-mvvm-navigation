@@ -1,5 +1,5 @@
 ﻿using System;
-#if NET45
+#if NET
 using System.Windows;
 using System.Windows.Interactivity;
 #endif
@@ -13,7 +13,7 @@ namespace LogoFX.Client.Mvvm.Navigation
     /// Navigate action.
     /// </summary>
     public sealed class NavigateAction : TriggerAction
-#if NET45
+#if NET
         <UIElement>
 #endif
     {

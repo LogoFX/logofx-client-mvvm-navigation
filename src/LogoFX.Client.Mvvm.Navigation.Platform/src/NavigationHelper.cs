@@ -1,5 +1,5 @@
 ﻿using System;
-#if NET45
+#if NET
 using System.Windows;
 using System.Windows.Input;
 #endif

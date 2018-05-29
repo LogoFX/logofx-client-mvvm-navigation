@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>LogoFX.Client.Mvvm.Navigation.Middleware</AssemblyName>
     <RootNamespace>LogoFX.Client.Mvvm.Navigation.Middleware</RootNamespace>
   </PropertyGroup>

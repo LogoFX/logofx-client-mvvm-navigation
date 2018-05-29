@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LogoFX.Client.Mvvm.Navigation.Modularity</RootNamespace>
     <AssemblyName>LogoFX.Client.Mvvm.Navigation.Modularity</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,11 +25,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Bin\net45\Release\</OutputPath>
+    <OutputPath>..\..\Bin\net\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Bin\net45\Release\LogoFX.Client.Mvvm.Navigation.Modularity.xml</DocumentationFile>
+    <DocumentationFile>..\..\Bin\net\Release\LogoFX.Client.Mvvm.Navigation.Modularity.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LogoFX.Client.Modularity, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
