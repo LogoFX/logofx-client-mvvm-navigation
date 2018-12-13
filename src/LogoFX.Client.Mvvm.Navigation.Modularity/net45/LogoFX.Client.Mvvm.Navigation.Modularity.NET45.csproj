@@ -32,11 +32,11 @@
     <DocumentationFile>..\..\Bin\net\Release\LogoFX.Client.Mvvm.Navigation.Modularity.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LogoFX.Client.Modularity, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\LogoFX.Client.Modularity.1.1.1-rc2\lib\netstandard2.0\LogoFX.Client.Modularity.dll</HintPath>
+    <Reference Include="LogoFX.Client.Modularity, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\LogoFX.Client.Modularity.2.0.0-rc1\lib\netstandard2.0\LogoFX.Client.Modularity.dll</HintPath>
     </Reference>
-    <Reference Include="Solid.Practices.IoC, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Solid.Practices.IoC.1.2.1-rc5\lib\netstandard2.0\Solid.Practices.IoC.dll</HintPath>
+    <Reference Include="Solid.Practices.IoC, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Solid.Practices.IoC.2.0.0-rc1\lib\netstandard2.0\Solid.Practices.IoC.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
