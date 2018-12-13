@@ -32,12 +32,6 @@
     <DocumentationFile>..\..\Bin\net\Release\LogoFX.Client.Mvvm.Navigation.Modularity.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LogoFX.Client.Modularity, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\LogoFX.Client.Modularity.2.0.0-rc1\lib\netstandard2.0\LogoFX.Client.Modularity.dll</HintPath>
-    </Reference>
-    <Reference Include="Solid.Practices.IoC, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Solid.Practices.IoC.2.0.0-rc1\lib\netstandard2.0\Solid.Practices.IoC.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -53,13 +47,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\LogoFX.Client.Mvvm.Navigation\net45\LogoFX.Client.Mvvm.Navigation.NET45.csproj">
       <Project>{01ace53a-74de-4193-8974-be96acda339e}</Project>
       <Name>LogoFX.Client.Mvvm.Navigation.NET45</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="LogoFX.Client.Modularity">
+      <Version>2.0.0-rc1</Version>
+    </PackageReference>
+    <PackageReference Include="Solid.Practices.IoC">
+      <Version>2.0.0-rc1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

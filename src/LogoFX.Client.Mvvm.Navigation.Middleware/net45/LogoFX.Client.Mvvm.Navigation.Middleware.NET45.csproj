@@ -32,45 +32,6 @@
     <DocumentationFile>..\..\Bin\net\Release\LogoFX.Client.Mvvm.Navigation.Middleware.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LogoFX.Bootstrapping, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\LogoFX.Bootstrapping.2.0.0-rc1\lib\netstandard2.0\LogoFX.Bootstrapping.dll</HintPath>
-    </Reference>
-    <Reference Include="LogoFX.Bootstrapping.Middleware, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\LogoFX.Bootstrapping.2.0.0-rc1\lib\netstandard2.0\LogoFX.Bootstrapping.Middleware.dll</HintPath>
-    </Reference>
-    <Reference Include="LogoFX.Client.Bootstrapping.Adapters.Contracts, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\LogoFX.Client.Bootstrapping.Adapters.Contracts.2.0.0-rc1\lib\netstandard2.0\LogoFX.Client.Bootstrapping.Adapters.Contracts.dll</HintPath>
-    </Reference>
-    <Reference Include="LogoFX.Client.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\LogoFX.Client.Core.Core.2.0.0-rc1\lib\netstandard2.0\LogoFX.Client.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Solid.Bootstrapping, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Solid.Bootstrapping.2.0.0-rc1\lib\netstandard2.0\Solid.Bootstrapping.dll</HintPath>
-    </Reference>
-    <Reference Include="Solid.Common, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Solid.Common.Core.2.0.0-rc1\lib\netstandard2.0\Solid.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Solid.Extensibility, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Solid.Extensibility.2.0.0-rc1\lib\netstandard2.0\Solid.Extensibility.dll</HintPath>
-    </Reference>
-    <Reference Include="Solid.Practices.Composition, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Solid.Practices.Composition.Core.2.0.0-rc1\lib\netstandard2.0\Solid.Practices.Composition.dll</HintPath>
-    </Reference>
-    <Reference Include="Solid.Practices.Composition.Container, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Solid.Practices.Composition.Core.2.0.0-rc1\lib\netstandard2.0\Solid.Practices.Composition.Container.dll</HintPath>
-    </Reference>
-    <Reference Include="Solid.Practices.Composition.Contracts, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Solid.Practices.Composition.Core.2.0.0-rc1\lib\netstandard2.0\Solid.Practices.Composition.Contracts.dll</HintPath>
-    </Reference>
-    <Reference Include="Solid.Practices.IoC, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Solid.Practices.IoC.2.0.0-rc1\lib\netstandard2.0\Solid.Practices.IoC.dll</HintPath>
-    </Reference>
-    <Reference Include="Solid.Practices.Middleware, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Solid.Practices.Middleware.2.0.0-rc1\lib\netstandard2.0\Solid.Practices.Middleware.dll</HintPath>
-    </Reference>
-    <Reference Include="Solid.Practices.Modularity, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Solid.Practices.Modularity.2.0.0-rc1\lib\netstandard2.0\Solid.Practices.Modularity.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -89,13 +50,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\LogoFX.Client.Mvvm.Navigation\net45\LogoFX.Client.Mvvm.Navigation.NET45.csproj">
       <Project>{01ace53a-74de-4193-8974-be96acda339e}</Project>
       <Name>LogoFX.Client.Mvvm.Navigation.NET45</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="LogoFX.Bootstrapping">
+      <Version>2.0.0-rc1</Version>
+    </PackageReference>
+    <PackageReference Include="LogoFX.Client.Bootstrapping.Adapters.Contracts">
+      <Version>2.0.0-rc1</Version>
+    </PackageReference>
+    <PackageReference Include="LogoFX.Client.Core.Core">
+      <Version>2.0.0-rc1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
